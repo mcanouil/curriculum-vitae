@@ -1,0 +1,55 @@
+---
+params:
+  author: "Mickaël Canouil"
+  xlsx: "data/cv.xlsx"
+  bib: "data/cv.bib"
+  picture: "data/cv.png"
+title: '`r paste(params[["author"]], "Curriculum Vitæ", sep = " - ")`'
+author: '`r params[["author"]]`'
+output:
+  pagedown::html_resume:
+    self_contained: true
+    css: "assets/cv.css"
+    mathjax: null
+    includes:
+      in_header: "assets/_favicon.html"
+knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, output_file = "index.html", encoding = encoding, output_dir = "docs") })
+---
+
+```{r setup, include = FALSE}
+options(stringsAsFactors = FALSE)
+knitr::opts_chunk$set(
+  results = "asis", 
+  eval = TRUE, 
+  echo = FALSE, 
+  message = FALSE, 
+  error = FALSE, 
+  warning = FALSE
+)
+source(file.path("assets", "cv.R"))
+```
+
+# Aside
+
+```{r, out.extra = 'style="width: 226px;" id="picture"'}
+knitr::include_graphics(params[["picture"]])
+```
+
+```{r}
+cat(
+  contact_section(xlsx = params[["xlsx"]], sheet = "contact"),
+  skills_section(xlsx = params[["xlsx"]], sheet = "skills"),
+  disclaimer_section(text = NULL),
+  title_section(author = params[["author"]]),
+  profil_section(xlsx = params[["xlsx"]], sheet = "profil"),
+  education_section(xlsx = params[["xlsx"]], sheet = "education", page_break_after = FALSE),
+  experience_section(xlsx = params[["xlsx"]], sheet = "experience", page_break_after = FALSE),
+  workshop_section(xlsx = params[["xlsx"]], sheet = "workshop", page_break_after = FALSE),
+  awards_section(xlsx = params[["xlsx"]], sheet = "awards", page_break_after = FALSE),
+  oral_section(xlsx = params[["xlsx"]], sheet = "oral", page_break_after = TRUE),
+  poster_section(xlsx = params[["xlsx"]], sheet = "poster", page_break_after = FALSE),
+  packages_section(xlsx = params[["xlsx"]], sheet = "packages", author = params[["author"]], page_break_after = FALSE),
+  articles_section(bib = params[["bib"]], author = params[["author"]], page_break_after = FALSE),
+  sep = "\n"
+)
+```
