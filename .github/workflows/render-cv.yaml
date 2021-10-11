@@ -52,7 +52,7 @@ jobs:
 
       - name: Render CV
         run: |
-          Rscript -e 'rmarkdown::render("curriculum_vitae.Rmd", output_file = "index.html", output_dir = "docs")'
+          Rscript -e 'rmarkdown::render("curriculum-vitae.Rmd", output_file = "index.html", output_dir = "docs")'
           git config --local user.name "$GITHUB_ACTOR"
           git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git commit -am 'update CV' || echo "No changes to commit"
