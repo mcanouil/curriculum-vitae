@@ -46,7 +46,7 @@ cat(
   experience_section(xlsx = params[["xlsx"]], sheet = "experience", page_break_after = FALSE),
   workshop_section(xlsx = params[["xlsx"]], sheet = "workshop", page_break_after = FALSE),
   awards_section(xlsx = params[["xlsx"]], sheet = "awards", page_break_after = FALSE),
-  oral_section(xlsx = params[["xlsx"]], sheet = "oral", page_break_after = TRUE),
+  oral_section(xlsx = params[["xlsx"]], sheet = "oral", page_break_after = FALSE),
   poster_section(xlsx = params[["xlsx"]], sheet = "poster", page_break_after = FALSE),
   packages_section(xlsx = params[["xlsx"]], sheet = "packages", author = params[["author"]], page_break_after = FALSE),
   articles_section(bib = params[["bib"]], author = params[["author"]], page_break_after = FALSE, only_first = TRUE),
