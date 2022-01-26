@@ -343,7 +343,7 @@ poster_section <- function(xlsx = "data/cv.xlsx", sheet = "poster", page_break_a
   }
 }
 
-articles_section <- function(bib = "data/cv.bib", author = NULL, page_break_after = FALSE) {
+articles_section <- function(bib = "data/cv.bib", author = NULL, page_break_after = FALSE, only_first = FALSE) {
   clean_field <- function(pattern, x) {
     gsub(
       pattern = paste0("^", pattern, " = "), 
@@ -496,13 +496,17 @@ articles_section <- function(bib = "data/cv.bib", author = NULL, page_break_afte
   
   author <- gsub(" ", "&nbsp;", author)
   text <- glue::glue_data(.x = read_bib(bib), .sep = '\n\n', 
-      '### {title}',
-      '{format_bib_author(authors, first, author)}',
-      'N/A',
-      '{month} {year}',
-      '::: aside',
-      '*[{journal}]({doi})*\n{ifelse(first, \'<p style="font-size: 75%;"><sup>&dagger;</sup> As first or co-first author.</p>\', \'\')}\n:::',
-    )
+    '### {title}',
+    '{format_bib_author(authors, first, author)}',
+    'N/A',
+    '{month} {year}',
+    '::: aside',
+    '*[{journal}]({doi})*\n{ifelse(first, \'<p style="font-size: 75%;"><sup>&dagger;</sup> As first or co-first author.</p>\', \'\')}\n:::',
+  )
+                
+  if (only_first) {
+    text <- text[grepl("As first or co-first author", text)]
+  }
   
   if (page_break_after) {
     c(glue::glue("## Publications ({length(text)}) {{data-icon=newspaper .break-after-me}}"), text)
