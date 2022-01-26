@@ -5,6 +5,7 @@ on:
       - curriculum-vitae.Rmd
   schedule:
     - cron: '0 0 1 */1 *'
+  workflow_dispatch:
 
 name: render-cv
 
