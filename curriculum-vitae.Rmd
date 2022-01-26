@@ -49,7 +49,7 @@ cat(
   oral_section(xlsx = params[["xlsx"]], sheet = "oral", page_break_after = TRUE),
   poster_section(xlsx = params[["xlsx"]], sheet = "poster", page_break_after = FALSE),
   packages_section(xlsx = params[["xlsx"]], sheet = "packages", author = params[["author"]], page_break_after = FALSE),
-  articles_section(bib = params[["bib"]], author = params[["author"]], page_break_after = FALSE),
+  articles_section(bib = params[["bib"]], author = params[["author"]], page_break_after = FALSE, only_first = TRUE),
   sep = "\n"
 )
 ```
