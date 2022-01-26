@@ -503,14 +503,17 @@ articles_section <- function(bib = "data/cv.bib", author = NULL, page_break_afte
     '::: aside',
     '*[{journal}]({doi})*\n{ifelse(first, \'<p style="font-size: 75%;"><sup>&dagger;</sup> As first or co-first author.</p>\', \'\')}\n:::',
   )
-                
+
+  articles_count <- length(text)
+
   if (only_first) {
     text <- text[grepl("As first or co-first author", text)]
+    articles_count <- sprintf("%s + %s", length(text), articles_count - length(text))
   }
   
   if (page_break_after) {
-    c(glue::glue("## Publications ({length(text)}) {{data-icon=newspaper .break-after-me}}"), text)
+    c(glue::glue("## Publications ({articles_count}) {{data-icon=newspaper .break-after-me}}"), text)
   } else {
-    c(glue::glue("## Publications ({length(text)}) {{data-icon=newspaper}}"), text)
+    c(glue::glue("## Publications ({articles_count}) {{data-icon=newspaper}}"), text)
   }
 }
