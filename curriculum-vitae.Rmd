@@ -13,17 +13,15 @@ output:
     mathjax: null
     includes:
       in_header: "assets/_favicon.html"
-knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, output_file = "index.html", encoding = encoding, output_dir = "docs") })
 ---
 
 ```{r setup, include = FALSE}
-options(stringsAsFactors = FALSE)
 knitr::opts_chunk$set(
-  results = "asis", 
-  eval = TRUE, 
-  echo = FALSE, 
-  message = FALSE, 
-  error = FALSE, 
+  results = "asis",
+  eval = TRUE,
+  echo = FALSE,
+  message = FALSE,
+  error = FALSE,
   warning = FALSE
 )
 source(file.path("assets", "cv.R"))
