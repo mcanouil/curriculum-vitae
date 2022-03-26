@@ -24,7 +24,18 @@ knitr::opts_chunk$set(
   error = FALSE,
   warning = FALSE
 )
-source(file.path("assets", "cv.R"))
+
+`%>%` <- magrittr::`%>%`
+main_colour <- "#333333"
+
+invisible(sapply(
+  X = list.files(
+    path = file.path("assets", "R"),
+    pattern = "\\.R$",
+    full.names = TRUE
+  ),
+  FUN = source
+))
 ```
 
 # Aside
