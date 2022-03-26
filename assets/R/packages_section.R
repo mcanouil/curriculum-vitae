@@ -1,6 +1,6 @@
 packages_section <- function(xlsx = "data/cv.xlsx", sheet = "packages", author = NULL, page_break_after = FALSE, colour = "#333333") {
-  text <- read_excel_sheet(xlsx, sheet) %>%
-    dplyr::slice(dplyr::n():1) %>%
+  text <- read_excel_sheet(xlsx, sheet) |>
+    dplyr::slice(dplyr::n():1) |>
     glue::glue_data(.sep = "\n\n",
       "### {name}: {title}",
       # "{format_package_author(authors, author)}",

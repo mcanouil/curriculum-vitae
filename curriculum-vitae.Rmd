@@ -25,9 +25,6 @@ knitr::opts_chunk$set(
   warning = FALSE
 )
 
-`%>%` <- magrittr::`%>%`
-main_colour <- "#333333"
-
 invisible(sapply(
   X = list.files(
     path = file.path("assets", "R"),
