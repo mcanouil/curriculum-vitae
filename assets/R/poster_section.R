@@ -1,4 +1,4 @@
-poster_section <- function(xlsx = "data/cv.xlsx", sheet = "poster", page_break_after = FALSE) {
+poster_section <- function(xlsx = "data/cv.xlsx", sheet = "poster", page_break_after = FALSE, colour = "#333333") {
   text <- read_excel_sheet(xlsx, sheet) |>
     dplyr::slice(dplyr::n():1) |>
     glue::glue_data(.sep = "\n\n",
@@ -6,7 +6,7 @@ poster_section <- function(xlsx = "data/cv.xlsx", sheet = "poster", page_break_a
       "{organiser}",
       "{city}",
       "{date}",
-      "::: aside\n{add_github_logo(url)}\n:::",
+      "::: aside\n{add_github_logo(url, colour)}\n:::",
       "\n\n"
     )
 
