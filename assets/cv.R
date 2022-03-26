@@ -8,12 +8,13 @@ add_github_logo <- function(url) {
   sub(
     "[GitHub]",
     paste0("[", fa("github", fill = main_colour), " GitHub]"),
-    gsub(
+    sub(
       pattern = "(.*)https://github.com/(.*)",
-      replacement = glue::glue("\\1[GitHub](https://github.com/\\2)"),
+      replacement = "\\1[GitHub](https://github.com/\\2)",
       x = url
     ),
-    fixed = TRUE)
+    fixed = TRUE
+  )
 }
 
 profil_section <- function(xlsx = "data/cv.xlsx", sheet = "profil") {
