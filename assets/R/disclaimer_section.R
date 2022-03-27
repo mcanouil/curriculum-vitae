@@ -1,7 +1,6 @@
 disclaimer_section <- function(text = NULL) {
-  glue::glue(
-    "## Disclaimer {{#disclaimer}}",
-    if (is.null(text)) "\n\n" else "\n\n{text}\n\n",
-    "Last updated on {Sys.Date()}.\n\n"
+  sprintf(
+    "## Disclaimer {{#disclaimer}}\n\n%sLast updated on {Sys.Date()}.\n\n",
+    if (is.null(text)) "" else sprintf("%s\n\n", text)
   )
 }

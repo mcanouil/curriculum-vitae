@@ -1,30 +1,35 @@
 packages_section <- function(xlsx = "data/cv.xlsx", sheet = "packages", author = NULL, page_break_after = FALSE, colour = "#333333") {
-  text <- read_excel_sheet(xlsx, sheet) |>
-    dplyr::slice(dplyr::n():1) |>
-    glue::glue_data(.sep = "\n\n",
-      "### {name}: {title}",
-      # "{format_package_author(authors, author)}",
-      "(As *{tolower(type)}*)",
-      '{purrr::map(where, ~ switch(EXPR = .x, "GitHub" = "GitHub", "CRAN" = "CRAN", "BOTH" = "CRAN"))}',
-      "{format_package_date(since)}",
-      "{format_package_url(user, name, where, colour)}"
+  text <- read_excel_sheet(xlsx, sheet)[
+    i = .N:1,
+    j = sprintf(
+      "### %s: %s\n\n(As *%s*)\n\n%s\n\n%s\n\n%s\n\n\n\n",
+      name, title, tolower(type),
+      lapply(
+        X = where,
+        FUN = function(.x) {
+          switch(EXPR = .x, "GitHub" = "GitHub", "CRAN" = "CRAN", "BOTH" = "CRAN")
+        }
+      ),
+      format_package_date(since),
+      format_package_url(user, name, where, colour)
     )
+  ]
 
   if (page_break_after) {
     c(
-      glue::glue("## R Packages ({length(text)}) {{data-icon=code .break-after-me}}"),
+      sprintf("## R Packages (%s) {{data-icon=code .break-after-me}}", length(text)),
       text
     )
   } else {
     c(
-      glue::glue("## R Packages ({length(text)}) {{data-icon=code}}"),
+      sprintf("## R Packages (%s) {{data-icon=code}}", length(text)),
       text
     )
   }
 }
 
 format_package_author <- function(authors, author, max = 57) {
-  purrr::map(authors, function(iauthors) {
+  lapply(X = authors, FUN = function(iauthors) {
     split_authors <- unlist(strsplit(strsplit(iauthors, ", ")[[1]], " and "))
     split_authors <- gsub(
       pattern = author,
@@ -53,7 +58,7 @@ format_package_author <- function(authors, author, max = 57) {
 }
 
 format_package_date <- function(date) {
-  purrr::map(date, function(idate) {
+  lapply(X = date, FUN = function(idate) {
     gsub(
       pattern = "May.",
       replacement = "May",
@@ -74,11 +79,16 @@ format_package_url <- function(repo_user, repo_name, where, colour) {
         EXPR = where,
         "GitHub" = {
           paste0(
-            "[https://github.com/", repo_user, "/", repo_name, "/](https://github.com/", repo_user, "/", repo_name, "/)",
+            "[https://github.com/", repo_user,
+            "/", repo_name, "/](https://github.com/",
+            repo_user, "/", repo_name, "/)",
             "\n\n",
             "::: aside",
             "\n",
-            "[![GitHub_tag](https://img.shields.io/github/tag/", repo_user, "/", repo_name, ".svg?label=Github&color=", mc, ")](https://github.com/", repo_user, "/", repo_name, "/)",
+            "[![GitHub_tag](https://img.shields.io/github/tag/",
+            repo_user, "/", repo_name,
+            ".svg?label=Github&color=", mc,
+            ")](https://github.com/", repo_user, "/", repo_name, "/)",
             "\n",
             ":::",
             "\n"
@@ -86,11 +96,14 @@ format_package_url <- function(repo_user, repo_name, where, colour) {
         },
         "CRAN" = {
           paste0(
-            "[https://cran.r-project.org/package=", repo_name, "](https://cran.r-project.org/package=", repo_name, ")",
+            "[https://cran.r-project.org/package=", repo_name,
+            "](https://cran.r-project.org/package=", repo_name, ")",
             "\n\n",
             "::: aside",
             "\n",
-            "[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version-ago/", repo_name, "?color=", mc, ")](https://cran.r-project.org/package=", repo_name, ")",
+            "[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version-ago/",
+            repo_name, "?color=", mc, ")](https://cran.r-project.org/package=",
+            repo_name, ")",
             "\n",
             ":::",
             "\n"
@@ -98,15 +111,22 @@ format_package_url <- function(repo_user, repo_name, where, colour) {
         },
         "BOTH" = {
           paste0(
-            "[https://cran.r-project.org/package=", repo_name, "](https://cran.r-project.org/package=", repo_name, ")  ",
+            "[https://cran.r-project.org/package=", repo_name,
+            "](https://cran.r-project.org/package=", repo_name, ")  ",
             "\n",
-            "[https://github.com/", repo_user, "/", repo_name, "/](https://github.com/", repo_user, "/", repo_name, "/)",
+            "[https://github.com/", repo_user, "/",
+            repo_name, "/](https://github.com/",
+            repo_user, "/", repo_name, "/)",
             "\n\n",
             "::: aside",
             "\n",
-            "[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version-ago/", repo_name, "?color=", mc, ")](https://cran.r-project.org/package=", repo_name, ")  ",
+            "[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version-ago/",
+            repo_name, "?color=", mc, ")](https://cran.r-project.org/package=",
+            repo_name, ")  ",
             "\n",
-            "[![GitHub_tag](https://img.shields.io/github/tag/", repo_user, "/", repo_name, ".svg?label=Github&color=", mc, ")](https://github.com/", repo_user, "/", repo_name, "/)",
+            "[![GitHub_tag](https://img.shields.io/github/tag/",
+            repo_user, "/", repo_name, ".svg?label=Github&color=",
+            mc, ")](https://github.com/", repo_user, "/", repo_name, "/)",
             "\n",
             ":::",
             "\n"

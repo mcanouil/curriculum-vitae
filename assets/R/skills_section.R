@@ -1,19 +1,21 @@
 skills_section <- function(xlsx = "data/cv.xlsx", sheet = "skills") {
-  read_excel_sheet(xlsx, sheet) |>
-    dplyr::group_by(level) |>
-    dplyr::summarise(
-      what = as.character(glue::glue_collapse(what, sep = ", ", last = " and ")),
-      .groups = "drop"
-    ) |>
-    tidyr::pivot_wider(names_from = level, values_from = what) |>
-    glue::glue_data(
-      "## Computer Skills {{#skills}}",
-      "\n\n",
-      '- <u style="color: var(--main-color);">*Advanced:*</u> {advanced}',
-      "\n",
-      '- <u style="color: var(--main-color);">*Intermediate:*</u> {intermediate}',
-      "\n",
-      '- <u style="color: var(--main-color);">*Basic:*</u> {basic}',
-      "\n\n"
+  text <- read_excel_sheet(xlsx, sheet)[
+    j = list(what = paste(
+      paste(what[-length(what)], collapse = ", "),
+      tail(what, 1),
+      sep = " and "
+    )),
+    by = "level"
+  ][
+    j = sprintf(
+      '- <u style="color: var(--main-color);">*%s:*</u> %s',
+      {
+        substring(level, 1, 1) <- toupper(substring(level, 1, 1))
+        level
+      },
+      what
     )
+  ]
+
+  sprintf("## Computer Skills {{#skills}}\n\n%s\n\n", paste(text, collapse = "\n"))
 }

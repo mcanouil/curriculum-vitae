@@ -1,18 +1,15 @@
 oral_section <- function(xlsx = "data/cv.xlsx", sheet = "oral", page_break_after = FALSE, colour = "#333333") {
-  text <- read_excel_sheet(xlsx, sheet) |>
-    dplyr::slice(dplyr::n():1) |>
-    glue::glue_data(.sep = "\n\n",
-      "### {title}",
-      "{organiser}",
-      "{city}",
-      "{date}",
-      "::: aside\n{add_github_logo(url, colour)}\n:::",
-      "\n\n"
+  text <- read_excel_sheet(xlsx, sheet)[
+    i = .N:1,
+    j = sprintf(
+      "### %s\n\n%s\n\n%s\n\n%s\n\n::: aside\n%s\n:::\n\n\n\n",
+      title, organiser, city, date, add_github_logo(url, colour)
     )
+  ]
 
   if (page_break_after) {
-    c(glue::glue("## Oral communications ({length(text)}) {{data-icon=comment-dots .break-after-me}}"), text)
+    c(sprintf("## Oral communications (%s) {{data-icon=comment-dots .break-after-me}}", length(text)), text)
   } else {
-    c(glue::glue("## Oral communications ({length(text)}) {{data-icon=comment-dots}}"), text)
+    c(sprintf("## Oral communications (%s) {{data-icon=comment-dots}}", length(text)), text)
   }
 }
