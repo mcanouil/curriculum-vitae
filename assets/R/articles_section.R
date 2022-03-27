@@ -1,13 +1,19 @@
 articles_section <- function(bib = "data/cv.bib", author = NULL, page_break_after = FALSE, only_first = FALSE) {
   author <- gsub(" ", "&nbsp;", author)
-  text <- glue::glue_data(.x = read_bib(bib), .sep = "\n\n",
-    "### {title}",
-    "{format_bib_author(authors, first, author)}",
-    "N/A",
-    "{month} {year}",
-    "::: aside",
-    '*[{journal}]({doi})*\n{ifelse(first, \'<p style="font-size: 75%;"><sup>&dagger;</sup> As first or co-first author.</p>\', \'\')}\n:::',
-  )
+  text <- data.table::setDT(read_bib(bib))[
+    j = sprintf(
+      "### %s\n\n%s\n\nN/A\n\n%s %s\n\n::: aside\n\n*[%s](%s)*\n%s\n:::",
+      title,
+      format_bib_author(authors, first, author),
+      month, year,
+      journal, doi,
+      ifelse(
+        test = first,
+        yes = '<p style="font-size: 75%;"><sup>&dagger;</sup> As first or co-first author.</p>',
+        no = ""
+      )
+    )
+  ]
 
   articles_count <- length(text)
 
