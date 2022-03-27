@@ -3,15 +3,7 @@ Title: Curriculum Vitae
 Version: 0.0.1
 License: LICENSE.md
 Imports: 
-    dplyr,
+    data.table,,
     fontawesome,
-    glue,
-    Hmisc,
-    knitr,
-    magrittr,
     pagedown,
-    purrr,
-    readxl,
-    renv,
-    rmarkdown,
-    tidyr
+    readxl

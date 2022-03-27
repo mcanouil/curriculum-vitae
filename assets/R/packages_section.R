@@ -1,4 +1,10 @@
-packages_section <- function(xlsx = "data/cv.xlsx", sheet = "packages", author = NULL, page_break_after = FALSE, colour = "#333333") {
+packages_section <- function(
+  xlsx = "data/cv.xlsx",
+  sheet = "packages",
+  author = NULL,
+  page_break_after = FALSE,
+  colour = "#333333"
+) {
   text <- read_excel_sheet(xlsx, sheet)[
     i = .N:1,
     j = sprintf(
@@ -71,9 +77,11 @@ format_package_date <- function(date) {
 }
 
 format_package_url <- function(repo_user, repo_name, where, colour) {
-  purrr::pmap(
-    .l = list(repo_user, repo_name, where),
-    .f =  function(repo_user, repo_name, where) {
+  mapply(
+    repo_user = repo_user,
+    repo_name = repo_name,
+    where = where,
+    FUN = function(repo_user, repo_name, where) {
       mc <- sub("#", "", colour)
       switch(
         EXPR = where,

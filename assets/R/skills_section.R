@@ -9,10 +9,7 @@ skills_section <- function(xlsx = "data/cv.xlsx", sheet = "skills") {
   ][
     j = sprintf(
       '- <u style="color: var(--main-color);">*%s:*</u> %s',
-      {
-        substring(level, 1, 1) <- toupper(substring(level, 1, 1))
-        level
-      },
+      capitalise(level),
       what
     )
   ]

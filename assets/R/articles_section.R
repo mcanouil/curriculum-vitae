@@ -17,15 +17,21 @@ articles_section <- function(bib = "data/cv.bib", author = NULL, page_break_afte
   }
 
   if (page_break_after) {
-    c(glue::glue("## Publications ({articles_count}) {{data-icon=newspaper .break-after-me}}"), text)
+    c(
+      sprintf("## Publications (%s) {{data-icon=newspaper .break-after-me}}", articles_count),
+      text
+    )
   } else {
-    c(glue::glue("## Publications ({articles_count}) {{data-icon=newspaper}}"), text)
+    c(
+      sprintf("## Publications (%s) {{data-icon=newspaper}}", articles_count),
+      text
+    )
   }
 }
 
 clean_field <- function(pattern, x) {
   gsub(
-    pattern = paste0("^", pattern, " = "),
+    pattern = sprintf("^%s = ", pattern),
     replacement = "",
     x = gsub(
       pattern = ",$",
@@ -33,7 +39,7 @@ clean_field <- function(pattern, x) {
       x = gsub(
         pattern = "[{}]",
         replacement = "",
-        x = grep(paste0("^", pattern), x, value = TRUE)
+        x = grep(sprintf("^%s", pattern), x, value = TRUE)
       )
     )
   )
@@ -47,7 +53,7 @@ read_article <- function(.x) {
   authors <- paste(paste(authors[-length(authors)], collapse = ", "), authors[length(authors)], sep = " and ")
   data.frame(
     title = clean_field("title", .x),
-    month = gsub("May.", "May", paste0(Hmisc::capitalize(clean_field("month", .x)), ".")),
+    month = gsub("May.", "May", paste0(capitalise(clean_field("month", .x)), ".")),
     year = clean_field("year", .x),
     doi = clean_field("doi", .x),
     authors = authors,
@@ -85,90 +91,106 @@ read_bib <- function(path) {
 }
 
 format_bib_author <- function(authors, first, author, max = 10) {
-  purrr::pmap(list(authors, first), function(iauthors, ifirst) {
-    split_authors <- unlist(strsplit(strsplit(iauthors, ", ")[[1]], " and "))
-    split_authors <- gsub(
-      pattern = author,
-      replacement = paste0("<u>", author, "</u>", if (ifirst) "<sup>&dagger;</sup>" else ""),
-      x = split_authors
-    )
-    pos_author <- grep(author, split_authors)
-    if (length(split_authors) <= max) {
-      paste(
-        paste(split_authors[-length(split_authors)], collapse = ", "),
-        split_authors[length(split_authors)],
-        sep = " and "
+  mapply(
+    iauthors = authors,
+    ifirst = first,
+    FUN = function(iauthors, ifirst) {
+      split_authors <- unlist(strsplit(strsplit(iauthors, ", ")[[1]], " and "))
+      split_authors <- gsub(
+        pattern = author,
+        replacement = paste0("<u>", author, "</u>", if (ifirst) "<sup>&dagger;</sup>" else ""),
+        x = split_authors
       )
-    } else {
-      switch(
-        EXPR = paste(abs(c(0, length(split_authors)) - pos_author) > ceiling(max / 2), collapse = "--"),
-        "TRUE--TRUE" = {
-          if (pos_author > ceiling((max - 1) / 2)) {
-            split_authors[pos_author] <- paste0(
-              split_authors[pos_author], "<sup>", pos_author, "/", length(split_authors), "</sup>"
-            )
-          }
-          paste0(
-            paste(
-              c(
-                split_authors[1:ceiling((max - 1) / 2)],
-                "*[...]*",
+      pos_author <- grep(author, split_authors)
+      if (length(split_authors) <= max) {
+        paste(
+          paste(split_authors[-length(split_authors)], collapse = ", "),
+          split_authors[length(split_authors)],
+          sep = " and "
+        )
+      } else {
+        switch(
+          EXPR = paste(
+            abs(c(0, length(split_authors)) - pos_author) > ceiling(max / 2),
+            collapse = "--"
+          ),
+          "TRUE--TRUE" = {
+            if (pos_author > ceiling((max - 1) / 2)) {
+              split_authors[pos_author] <- paste0(
                 split_authors[pos_author],
-                "*[...]*",
-                split_authors[(length(split_authors) - (max - 1 - ceiling((max - 1) / 2))):(length(split_authors) - 1)]
+                "<sup>", pos_author, "/", length(split_authors), "</sup>"
+              )
+            }
+            paste0(
+              paste(
+                c(
+                  split_authors[1:ceiling((max - 1) / 2)],
+                  "*[...]*",
+                  split_authors[pos_author],
+                  "*[...]*",
+                  split_authors[
+                    (length(split_authors) - (max - 1 - ceiling((max - 1) / 2))):(length(split_authors) - 1)
+                  ]
+                ),
+                collapse = ", "
               ),
-              collapse = ", "
-            ),
-            " and ",
-            split_authors[length(split_authors)]
-          )
-        },
-        "TRUE--FALSE" = {
-          if (pos_author > ceiling(max / 2)) {
-            split_authors[pos_author] <- paste0(
-              split_authors[pos_author], "<sup>", pos_author, "/", length(split_authors), "</sup>"
+              " and ",
+              split_authors[length(split_authors)]
+            )
+          },
+          "TRUE--FALSE" = {
+            if (pos_author > ceiling(max / 2)) {
+              split_authors[pos_author] <- paste0(
+                split_authors[pos_author],
+                "<sup>", pos_author, "/", length(split_authors), "</sup>"
+              )
+            }
+            paste0(
+              paste(
+                c(
+                  split_authors[1:ceiling(max / 2)],
+                  "*[...]*",
+                  split_authors[
+                    (length(split_authors) - (max - 1 - ceiling(max / 2))):(length(split_authors) - 1)
+                  ]
+                ),
+                collapse = ", "
+              ),
+              " and ",
+              split_authors[length(split_authors)]
+            )
+          },
+          "FALSE--TRUE" = {
+            if (pos_author > ceiling(max / 2)) {
+              split_authors[pos_author] <- paste0(
+                split_authors[pos_author],
+                "<sup>", pos_author, "/", length(split_authors), "</sup>"
+              )
+            }
+            paste0(
+              paste(
+                c(
+                  split_authors[1:ceiling(max / 2)],
+                  "*[...]*",
+                  split_authors[
+                    (length(split_authors) - (max - 1 - ceiling(max / 2))):(length(split_authors) - 1)
+                  ]
+                ),
+                collapse = ", "
+              ),
+              " and ",
+              split_authors[length(split_authors)]
+            )
+          },
+          "FALSE--FALSE" = {
+            paste(
+              paste(split_authors[-length(split_authors)], collapse = ", "),
+              split_authors[length(split_authors)],
+              sep = " and "
             )
           }
-          paste0(
-            paste(
-              c(
-                split_authors[1:ceiling(max / 2)],
-                "*[...]*",
-                split_authors[(length(split_authors) - (max - 1 - ceiling(max / 2))):(length(split_authors) - 1)]
-              ),
-              collapse = ", "
-            ),
-            " and ",
-            split_authors[length(split_authors)]
-          )
-        },
-        "FALSE--TRUE" = {
-          if (pos_author > ceiling(max / 2)) {
-            split_authors[pos_author] <- paste0(
-              split_authors[pos_author], "<sup>", pos_author, "/", length(split_authors), "</sup>"
-            )
-          }
-          paste0(
-            paste(
-              c(
-                split_authors[1:ceiling(max / 2)],
-                "*[...]*",
-                split_authors[(length(split_authors) - (max - 1 - ceiling(max / 2))):(length(split_authors) - 1)]
-              ),
-              collapse = ", "
-            ),
-            " and ",
-            split_authors[length(split_authors)]
-          )
-        },
-        "FALSE--FALSE" = {
-          paste(
-            paste(split_authors[-length(split_authors)], collapse = ", "),
-            split_authors[length(split_authors)],
-            sep = " and "
-          )
-        }
-      )
+        )
+      }
     }
-  })
+  )
 }
