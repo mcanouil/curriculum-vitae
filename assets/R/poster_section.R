@@ -8,8 +8,8 @@ poster_section <- function(xlsx = "data/cv.xlsx", sheet = "poster", page_break_a
   ]
 
   if (page_break_after) {
-    c(sprintf("## Poster communications (%s) {{data-icon=file .break-after-me}}", length(text)), text)
+    c(sprintf("## Poster communications (%s) {data-icon=file .break-after-me}", length(text)), text)
   } else {
-    c(sprintf("## Poster communications (%s) {{data-icon=file}}", length(text)), text)
+    c(sprintf("## Poster communications (%s) {data-icon=file}", length(text)), text)
   }
 }

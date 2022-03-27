@@ -8,8 +8,8 @@ workshop_section <- function(xlsx = "data/cv.xlsx", sheet = "workshop", page_bre
   ]
 
   if (page_break_after) {
-    c(sprintf("## Workshop Experience (%s) {{data-icon=chalkboard-teacher .break-after-me}}", length(text)), text)
+    c(sprintf("## Workshop Experience (%s) {data-icon=chalkboard-teacher .break-after-me}", length(text)), text)
   } else {
-    c(sprintf("## Workshop Experience (%s) {{data-icon=chalkboard-teacher}}", length(text)), text)
+    c(sprintf("## Workshop Experience (%s) {data-icon=chalkboard-teacher}", length(text)), text)
   }
 }

@@ -2,7 +2,7 @@ contact_section <- function(xlsx = "data/cv.xlsx", sheet = "contact", colour = "
   read_excel_sheet(xlsx, sheet)[
     j = sprintf(
       fmt = paste(
-        "## Contact Info {{#contact}}\n",
+        "## Contact Info {#contact}\n",
         "- %s %s",
         "- %s %s",
         "- %s %s",

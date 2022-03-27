@@ -14,5 +14,5 @@ skills_section <- function(xlsx = "data/cv.xlsx", sheet = "skills") {
     )
   ]
 
-  sprintf("## Computer Skills {{#skills}}\n\n%s\n\n", paste(text, collapse = "\n"))
+  sprintf("## Computer Skills {#skills}\n\n%s\n\n", paste(text, collapse = "\n"))
 }

@@ -8,8 +8,8 @@ oral_section <- function(xlsx = "data/cv.xlsx", sheet = "oral", page_break_after
   ]
 
   if (page_break_after) {
-    c(sprintf("## Oral communications (%s) {{data-icon=comment-dots .break-after-me}}", length(text)), text)
+    c(sprintf("## Oral communications (%s) {data-icon=comment-dots .break-after-me}", length(text)), text)
   } else {
-    c(sprintf("## Oral communications (%s) {{data-icon=comment-dots}}", length(text)), text)
+    c(sprintf("## Oral communications (%s) {data-icon=comment-dots}", length(text)), text)
   }
 }

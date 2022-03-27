@@ -23,12 +23,12 @@ packages_section <- function(
 
   if (page_break_after) {
     c(
-      sprintf("## R Packages (%s) {{data-icon=code .break-after-me}}", length(text)),
+      sprintf("## R Packages (%s) {data-icon=code .break-after-me}", length(text)),
       text
     )
   } else {
     c(
-      sprintf("## R Packages (%s) {{data-icon=code}}", length(text)),
+      sprintf("## R Packages (%s) {data-icon=code}", length(text)),
       text
     )
   }

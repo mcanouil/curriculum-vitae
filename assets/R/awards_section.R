@@ -8,8 +8,8 @@ awards_section <- function(xlsx = "data/cv.xlsx", sheet = "awards", page_break_a
   ]
 
   if (page_break_after) {
-    c(sprintf("## Awards (%s) {{data-icon=trophy .break-after-me}}", length(text)), text)
+    c(sprintf("## Awards (%s) {data-icon=trophy .break-after-me}", length(text)), text)
   } else {
-    c(sprintf("## Awards (%s) {{data-icon=trophy}}", length(text)), text)
+    c(sprintf("## Awards (%s) {data-icon=trophy}", length(text)), text)
   }
 }

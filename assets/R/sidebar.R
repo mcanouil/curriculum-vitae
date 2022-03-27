@@ -6,7 +6,7 @@ sidebar <- function(
 ) {
   cat(
     "# Aside\n",
-    '```{{r, out.extra = \'style="width=226px;" id="picture"\'}}',
+    '```{r, out.extra = \'style="width=226px;" id="picture"\'}',
     "knitr::include_graphics({png})",
      "```",
     contact,
