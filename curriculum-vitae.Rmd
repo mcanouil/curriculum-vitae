@@ -4,29 +4,35 @@ params:
   xlsx: "data/cv.xlsx"
   bib: "data/cv.bib"
   picture: "data/cv.png"
-title: '`r paste(params[["author"]], "Curriculum Vitæ", sep = " - ")`'
+title: '`r sprintf("%s - Curriculum Vitæ", params[["author"]])`'
 author: '`r params[["author"]]`'
 output:
   pagedown::html_resume:
     self_contained: true
-    css: "assets/cv.css"
     mathjax: null
+    css: "assets/cv.css"
     includes:
       in_header: "assets/_favicon.html"
-knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, output_file = "index.html", encoding = encoding, output_dir = "docs") })
 ---
 
 ```{r setup, include = FALSE}
-options(stringsAsFactors = FALSE)
 knitr::opts_chunk$set(
-  results = "asis", 
-  eval = TRUE, 
-  echo = FALSE, 
-  message = FALSE, 
-  error = FALSE, 
+  results = "asis",
+  eval = TRUE,
+  echo = FALSE,
+  message = FALSE,
+  error = FALSE,
   warning = FALSE
 )
-source(file.path("assets", "cv.R"))
+
+invisible(sapply(
+  X = list.files(
+    path = file.path("assets", "R"),
+    pattern = "\\.R$",
+    full.names = TRUE
+  ),
+  FUN = source
+))
 ```
 
 # Aside
@@ -44,10 +50,10 @@ cat(
   profil_section(xlsx = params[["xlsx"]], sheet = "profil"),
   education_section(xlsx = params[["xlsx"]], sheet = "education", page_break_after = FALSE),
   experience_section(xlsx = params[["xlsx"]], sheet = "experience", page_break_after = FALSE),
-  workshop_section(xlsx = params[["xlsx"]], sheet = "workshop", page_break_after = FALSE),
-  awards_section(xlsx = params[["xlsx"]], sheet = "awards", page_break_after = FALSE),
-  oral_section(xlsx = params[["xlsx"]], sheet = "oral", page_break_after = FALSE),
-  poster_section(xlsx = params[["xlsx"]], sheet = "poster", page_break_after = FALSE),
+  workshop_section(xlsx = params[["xlsx"]], sheet = "workshop", page_break_after = FALSE, colour = "#33333"),
+  awards_section(xlsx = params[["xlsx"]], sheet = "awards", page_break_after = FALSE, colour = "#33333"),
+  oral_section(xlsx = params[["xlsx"]], sheet = "oral", page_break_after = FALSE, colour = "#33333"),
+  poster_section(xlsx = params[["xlsx"]], sheet = "poster", page_break_after = FALSE, colour = "#33333"),
   packages_section(xlsx = params[["xlsx"]], sheet = "packages", author = params[["author"]], page_break_after = FALSE),
   articles_section(bib = params[["bib"]], author = params[["author"]], page_break_after = FALSE, only_first = TRUE),
   sep = "\n"
