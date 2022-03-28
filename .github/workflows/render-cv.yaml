@@ -28,8 +28,8 @@ jobs:
         with:
           packages: |
             any::data.table
-            any::fontawesome,
-            any::pagedown,
+            any::fontawesome
+            any::pagedown
             any::readxl
 
       - name: Render curriculum-vitae.Rmd
