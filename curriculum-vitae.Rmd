@@ -15,7 +15,8 @@ output:
       in_header: "assets/_favicon.html"
 ---
 
-```{r setup, include = FALSE}
+```{r}
+#| include: false
 knitr::opts_chunk$set(
   results = "asis",
   eval = TRUE,
@@ -37,7 +38,8 @@ invisible(sapply(
 
 # Aside
 
-```{r, out.extra = 'style="width: 226px;" id="picture"'}
+```{r}
+#| out.extra: 'style="width: 226px;" id="picture"'
 knitr::include_graphics(params[["picture"]])
 ```
 
