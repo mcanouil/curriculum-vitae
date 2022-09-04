@@ -43,7 +43,7 @@ jobs:
             any::pagedown
             any::readxl
       - name: Render curriculum-vitae.Rmd
-        run: Rscript -e 'rmarkdown::render("curriculum-vitae.Rmd", output_file = "index.html", output_dir = "docs")'
+        run: Rscript -e 'rmarkdown::render("curriculum-vitae.Rmd", output_file = "index.html")'
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
