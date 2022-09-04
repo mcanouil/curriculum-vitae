@@ -43,11 +43,11 @@ jobs:
             any::pagedown
             any::readxl
       - name: Render curriculum-vitae.Rmd
-        run: Rscript -e 'rmarkdown::render("curriculum-vitae.Rmd", output_file = "index.html")'
+        run: Rscript -e 'rmarkdown::render("curriculum-vitae.Rmd", output_file = "index.html", output_dir = "docs")'
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: 'index.html'
+          path: 'docs'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
