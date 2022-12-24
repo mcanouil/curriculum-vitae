@@ -381,6 +381,7 @@ h1, h2 {
   padding-left: 0;
   font-weight: 500;
   line-height: 1.75;
+  font-size: 99%;
 }
 
 #contact li > i {
@@ -390,7 +391,7 @@ h1, h2 {
 
 #skills {
   line-height: 1.5;
-  font-size: 1.rem;
+  font-size: 1rem;
 }
 
 #skills ul {
