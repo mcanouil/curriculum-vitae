@@ -1,4 +1,16 @@
-contact_section <- function(xlsx = "data/cv.xlsx", sheet = "contact", colour = "#333333") {
+#' Contact Section
+#' #' @description
+#' This function generates a contact section for a CV in R Markdown format.
+#' @param xlsx Path to the Excel file containing contact information.
+#' @param sheet Name of the sheet in the Excel file to read contact data from.
+#' @param colour The color of the icons (default is "#333333").
+#' @return A character vector containing the formatted contact section.
+contact_section <- function(
+    xlsx = "data/cv.xlsx",
+    sheet = "contact",
+    colour = "#333333"
+    ) {
+  
   read_excel_sheet(xlsx, sheet)[
     j = paste0(
       "## Contact Info {#contact}\n",

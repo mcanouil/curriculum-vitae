@@ -1,4 +1,19 @@
-awards_section <- function(xlsx = "data/cv.xlsx", sheet = "awards", page_break_after = FALSE, colour = "#333333") {
+#' Create a section for awards and funding in a CV
+#' @description
+#' This function creates a section for awards and funding in a CV from an Excel sheet.
+#' @param xlsx Path to the Excel file containing the awards data.
+#' @param sheet Name of the sheet in the Excel file to read data from.
+#' @param page_break_after Logical value indicating whether to insert a page break after the section.
+#' @param colour The color of the logos (default is "#333333").
+#' @return A character vector containing the formatted awards section. 
+awards_section <- function(
+    xlsx = "data/cv.xlsx",
+    sheet = "awards",
+    page_break_after = FALSE,
+    colour = "#333333"
+    ) {
+  
+  # Read the specified sheet from the Excel file
   df <- read_excel_sheet(xlsx, sheet)
   df <- df[nrow(df):1, ]  # Reverse order
   

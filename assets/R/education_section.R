@@ -1,11 +1,18 @@
-education_section <- function(xlsx = "data/cv.xlsx", sheet = "education", page_break_after = FALSE) {
-  # text <- read_excel_sheet(xlsx, sheet)[
-  #   i = .N:1,
-  #   j = sprintf(
-  #     "### %s\n\n%s\n\n%s\n\n%s - %s\n\n*%s*\n\n\n\n",
-  #     degree, university, city, start, end, description
-  #   )
-  # ]
+#' @title Create an education section for a CV
+#' @description
+#' This function creates an education section for a CV from an Excel sheet.
+#' #' @param xlsx Path to the Excel file containing the education data.
+#' #' @param sheet Name of the sheet in the Excel file to read data from.
+#' #' @param page_break_after Logical value indicating whether to insert a page break after the section.
+#' #' @param include_sections A character vector indicating which sections to include in the output.
+#' #' @return A character vector containing the formatted education section.
+education_section <- function(
+    xlsx = "data/cv.xlsx",
+    sheet = "education",
+    page_break_after = FALSE,
+    include_sections = c("description", "thesis", "awards")
+    ) {
+
   
   #load sheet and convert to data.frame
   text <- as.data.frame(read_excel_sheet(xlsx,sheet))
@@ -26,16 +33,28 @@ education_section <- function(xlsx = "data/cv.xlsx", sheet = "education", page_b
       x["start"], " - ", x["end"], "\n\n"
     )
     
-    #check for non-empty description column
-    if(!is.na(x["thesis"]) && x["thesis"] != ""){
-      result_string <- paste0(result_string, "Thesis: *", x["thesis"], "*\n\n")
+    if("description" %in% include_sections){
+      #check for non-empty description column
+      if(!is.na(x["description"]) && x["description"] != ""){
+        result_string <- paste0(result_string, x["description"], "\n\n")
+      }
     }
-    
-    #check for non-empty awards column
-    if(!is.na(x["awards"]) && x["awards"] != ""){
-      result_string <- paste0(result_string, "Awards: *", x["awards"], "*\n\n") 
+  
+  
+    if("thesis" %in% include_sections){
+      #check for non-empty thesis column
+      if(!is.na(x["thesis"]) && x["thesis"] != ""){
+        result_string <- paste0(result_string, "Thesis: *", x["thesis"], "*\n\n")
+      }
     }
-    
+
+    if("awards" %in% include_sections){
+      #check for non-empty awards column
+      if(!is.na(x["awards"]) && x["awards"] != ""){
+        result_string <- paste0(result_string, "Awards: *", x["awards"], "*\n\n") 
+      }
+    }
+
     #add new line at the end
     result_string <- paste0(result_string, "\n\n")
     

@@ -1,4 +1,9 @@
-oral_section <- function(xlsx = "data/cv.xlsx", sheet = "oral", page_break_after = FALSE, colour = "#333333") {
+oral_section <- function(
+    xlsx = "data/cv.xlsx",
+    sheet = "oral",
+    page_break_after = FALSE,
+    colour = "#333333"
+    ) {
   text <- read_excel_sheet(xlsx, sheet)[
     i = .N:1,
     j = paste0(
