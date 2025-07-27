@@ -7,14 +7,10 @@ skills_section <- function(xlsx = "data/cv.xlsx", sheet = "skills") {
     )),
     by = "level"
   ][
-    j = sprintf(
-      '- <u style="color: var(--main-color);">*%s:*</u> %s',
-      capitalise(level),
-      what
+    j = paste0(
+      '- <u style="color: var(--main-color);">*', capitalise(level), ':*</u> ', what
     )
   ]
 
-  sprintf("## Computer Skills {#skills}\n\n%s\n\n", paste(text, collapse = "\n"))
+  paste0("## Computer Skills {#skills}\n\n", paste(text, collapse = "\n"), "\n\n")
 }
-
-

@@ -17,6 +17,8 @@ knit: pagedown::chrome_print
 
 ```{r}
 #| include: false
+
+# Set knitr options
 knitr::opts_chunk$set(
   results = "asis",
   eval = TRUE,
@@ -26,7 +28,7 @@ knitr::opts_chunk$set(
   warning = FALSE
 )
 
-
+# Load functions for each section
 invisible(sapply(
   X = list.files(
     path = file.path("assets", "R"),
@@ -45,20 +47,21 @@ knitr::include_graphics(params[["picture"]])
 ```
 
 ```{r}
+# Print contents of all sections, comment out sections that you do not want to include
 cat(
   contact_section(xlsx = params[["xlsx"]], sheet = "contact"),
   skills_section(xlsx = params[["xlsx"]], sheet = "skills"),
   languages_section(xlsx = params[["xlsx"]], sheet = "languages"),
   title_section(author = params[["author"]]),
   profil_section(xlsx = params[["xlsx"]], sheet = "profil"),
-  education_section(xlsx = params[["xlsx"]], sheet = "education", page_break_after = FALSE),
-  experience_section(xlsx = params[["xlsx"]], sheet = "experience", page_break_after = FALSE),
+  education_section(xlsx = params[["xlsx"]], sheet = "education", page_break_after = FALSE),  
+  experience_section(xlsx = params[["xlsx"]], sheet = "experience", page_break_after = FALSE, use_bullets = FALSE, reverse_order = FALSE),  
   workshop_section(xlsx = params[["xlsx"]], sheet = "workshop", page_break_after = FALSE, colour = "#33333"),
   awards_section(xlsx = params[["xlsx"]], sheet = "awards", page_break_after = FALSE, colour = "#33333"),
+  articles_section(bib = params[["bib"]], author = params[["author"]], page_break_after = FALSE),
   oral_section(xlsx = params[["xlsx"]], sheet = "oral", page_break_after = FALSE, colour = "#33333"),
   #poster_section(xlsx = params[["xlsx"]], sheet = "poster", page_break_after = FALSE, colour = "#33333"),
   #packages_section(xlsx = params[["xlsx"]], sheet = "packages", author = params[["author"]], page_break_after = FALSE),
-  articles_section(bib = params[["bib"]], author = params[["author"]], page_break_after = FALSE),
   disclaimer_section(text = NULL),
   sep = "\n"
 )
