@@ -7,28 +7,28 @@ packages_section <- function(
 ) {
   text <- read_excel_sheet(xlsx, sheet)[
     i = .N:1,
-    j = sprintf(
-      "### %s: %s\n\n(As *%s*)\n\n%s\n\n%s\n\n%s\n\n\n\n",
-      name, title, tolower(type),
+    j = paste0(
+      "### ", name, ": ", title, "\n\n",
+      "(As *", tolower(type), "*)\n\n",
       lapply(
         X = where,
         FUN = function(.x) {
           switch(EXPR = .x, "GitHub" = "GitHub", "CRAN" = "CRAN", "BOTH" = "CRAN")
         }
-      ),
-      format_package_date(since),
-      format_package_url(user, name, where, colour)
+      ), "\n\n",
+      format_package_date(since), "\n\n",
+      format_package_url(user, name, where, colour), "\n\n\n\n"
     )
   ]
 
   if (page_break_after) {
     c(
-      sprintf("## R Packages (%s) {data-icon=code .break-after-me}", length(text)),
+      paste0("## R Packages (", length(text), ") {data-icon=code .break-after-me}"),
       text
     )
   } else {
     c(
-      sprintf("## R Packages (%s) {data-icon=code}", length(text)),
+      paste0("## R Packages (", length(text), ") {data-icon=code}"),
       text
     )
   }

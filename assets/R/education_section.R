@@ -13,36 +13,34 @@ education_section <- function(xlsx = "data/cv.xlsx", sheet = "education", page_b
   #sort the rows in reverse order
   text <- text[nrow(text):1,]
   
-  #loop over rows and construct 'c' formated strings dependent on column entries
+  #loop over rows and construct strings dependent on column entries
   
-  #vector string that is consistently used for the first columns 
-  base_str <- "### %s\n\n%s\n\n%s\n\n%s - %s\n\n"
-  #               Degree  University  City  Start  End
   #loop over rows pasting string
   strings <- apply(text,1, function(x){
     
+    # Build base string using paste0 instead of sprintf
+    result_string <- paste0(
+      "### ", x["degree"], "\n\n",
+      x["university"], "\n\n",
+      x["city"], "\n\n",
+      x["start"], " - ", x["end"], "\n\n"
+    )
+    
     #check for non-empty description column
-    if(x["description"] != ""){
-      base_str <- paste0(base_str, "Description: *%s*\n\n")
+    if(!is.na(x["thesis"]) && x["thesis"] != ""){
+      result_string <- paste0(result_string, "Thesis: *", x["thesis"], "*\n\n")
     }
     
     #check for non-empty awards column
-    if(x["awards"] != ""){
-     base_str <- paste0(base_str, "Awards: *%s*\n\n") 
+    if(!is.na(x["awards"]) && x["awards"] != ""){
+      result_string <- paste0(result_string, "Awards: *", x["awards"], "*\n\n") 
     }
     
     #add new line at the end
-    base_str <- paste0(base_str, "\n\n")
-    
-    #identify names of non-empty entries in x
-    col_names <- names(x)[nzchar(x)]
-
-    #browser()
-    #create c string
-    c_str <- do.call(sprintf, c(fmt = base_str, as.list(x[col_names])))
+    result_string <- paste0(result_string, "\n\n")
     
     #return the string
-    return(c_str)
+    return(result_string)
   })
   
   if (page_break_after) {

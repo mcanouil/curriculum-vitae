@@ -16,13 +16,10 @@ languages_section <- function(xlsx = "data/cv.xlsx", sheet = "languages") {
   
 
   text <- read_excel_sheet(xlsx, sheet)[
-    j = sprintf(
-      '- <u style="color: var(--main-color);">*%s:*</u> %s',
-      what,
-      level
+    j = paste0(
+      '- <u style="color: var(--main-color);">*', what, ':*</u> ', level
     )
   ]
 
-  sprintf("## Languages {#skills}\n\n%s\n\n", paste(text, collapse = "\n"))
+  paste0("## Languages {#skills}\n\n", paste(text, collapse = "\n"), "\n\n")
 }
-

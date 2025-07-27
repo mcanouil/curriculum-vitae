@@ -1,15 +1,18 @@
 poster_section <- function(xlsx = "data/cv.xlsx", sheet = "poster", page_break_after = FALSE, colour = "#333333") {
   text <- read_excel_sheet(xlsx, sheet)[
     i = .N:1,
-    j = sprintf(
-      "### %s\n\n%s\n\n%s\n\n%s\n\n::: aside\n%s\n:::\n\n\n\n",
-      title, organiser, city, date, add_github_logo(url, colour)
+    j = paste0(
+      "### ", title, "\n\n",
+      organiser, "\n\n",
+      city, "\n\n",
+      date, "\n\n",
+      "::: aside\n", add_github_logo(url, colour), "\n:::\n\n\n\n"
     )
   ]
 
   if (page_break_after) {
-    c(sprintf("## Poster communications (%s) {data-icon=file .break-after-me}", length(text)), text)
+    c(paste0("## Poster communications (", length(text), ") {data-icon=file .break-after-me}"), text)
   } else {
-    c(sprintf("## Poster communications (%s) {data-icon=file}", length(text)), text)
+    c(paste0("## Poster communications (", length(text), ") {data-icon=file}"), text)
   }
 }

@@ -8,6 +8,6 @@ profil_section <- function(xlsx = "data/cv.xlsx", sheet = "profil") {
       FUN.VALUE = character(1)
     )
   ][
-    j = sprintf("%s %s\n\n%s\n\n", level, title, paragraph)
+    j = paste0(level, " ", title, "\n\n", paragraph, "\n\n")
   ]
 }
