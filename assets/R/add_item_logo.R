@@ -1,4 +1,13 @@
-add_item_logo <- function(url, type, colour = "#333333") {
+#' Add logo to item links
+#' @param url The URL to the item.
+#' @param type The type of item (e.g., "github", "presentation", "website").
+#' @param colour The color of the logo (default is "#333333").
+#' @return A formatted string with the logo and link.
+add_item_logo <- function(
+    url,
+    type,
+    colour = "#333333"
+    ) {
   
   if(type == "github") {
     string <- sub(

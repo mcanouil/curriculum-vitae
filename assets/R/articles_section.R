@@ -1,12 +1,18 @@
 #devtools::install_github("ropensci/bib2df")
 library(bib2df)
 
-#bib <- "data/cv.bib"
-# article <- articles[3,]
-
-articles_section <- function(bib = "data/cv.bib",
-                             author = "Black",
-                             page_break_after = FALSE) {
+#' Create a section for articles in a CV
+#' @description
+#' This function creates a section for articles in a CV from a BibTeX file.
+#' @param bib Path to the BibTeX file containing the articles.
+#' @param author The author to highlight in the articles section.
+#' @param page_break_after Logical value indicating whether to insert a page break after the section.
+#' @return A character vector containing the formatted articles section.
+articles_section <- function(
+    bib = "data/cv.bib",
+    author = "Black",
+    page_break_after = FALSE
+    ) {
   
   #read the bib tex file
   articles <- bib2df(bib)
@@ -136,7 +142,6 @@ articles_section <- function(bib = "data/cv.bib",
     
   }, simplify = TRUE))
   
-  
   #count number of articles
   articles_count <- length(strings)
   
@@ -150,5 +155,3 @@ articles_section <- function(bib = "data/cv.bib",
 }
 
 
-#test <- articles_section()
-#print(test)

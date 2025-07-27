@@ -1,4 +1,19 @@
-experience_section <- function(xlsx = "data/cv.xlsx", sheet = "experience", page_break_after = FALSE, use_bullets = TRUE, reverse_order = TRUE) {
+#' Create a professional experience section for a CV
+#' @description
+#' This function creates a professional experience section for a CV from an Excel sheet.
+#' #' @param xlsx Path to the Excel file containing the experience data.
+#' #' @param sheet Name of the sheet in the Excel file to read data from.
+#' #' @param page_break_after Logical value indicating whether to insert a page break after the section.
+#' #' @param use_bullets Logical value indicating whether to use bullet points for activities.
+#' #' @param reverse_order Logical value indicating whether to reverse the order of entries (most recent first).
+#' @return A character vector containing the formatted experience section.
+experience_section <- function(
+    xlsx = "data/cv.xlsx",
+    sheet = "experience",
+    page_break_after = FALSE,
+    use_bullets = TRUE,
+    reverse_order = TRUE
+    ) {
   
   # Load required libraries
   library(data.table)

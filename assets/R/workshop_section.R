@@ -15,8 +15,8 @@ workshop_section <- function(xlsx = "data/cv.xlsx", sheet = "workshop", page_bre
     }
     
     paste0(
-      "### ", title, "\n\n",
-      type, "\n\n",
+      "### ", title, "\n\n", "*",
+      type, "*\n\n",
       city, "\n\n",
       date_str,
       "::: aside\n",
