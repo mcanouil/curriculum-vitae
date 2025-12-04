@@ -1,0 +1,28 @@
+- subject: R (Shiny, Quarto)
+  level: advanced
+- subject: Dinamica EGO
+  level: advanced
+- subject: Netica
+  level: advanced
+- subject: MS Office
+  level: advanced
+- subject: ArcGIS
+  level: intermediate
+- subject: QGIS
+  level: intermediate
+- subject: CSS
+  level: intermediate
+- subject: Git
+  level: intermediate
+- subject: Python
+  level: basic
+- subject: HTML
+  level: basic
+- subject: Docker
+  level: basic
+- subject: JavaScript
+  level: basic
+- subject: Bash
+  level: basic
+- subject: Slurm
+  level: basic

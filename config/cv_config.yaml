@@ -1,0 +1,25 @@
+# CV Data Configuration
+# This file contains configuration for accessing CV data from GitHub
+
+# GitHub repository settings
+cv_data_repo: "blenback/profi"  
+cv_data_branch: "main"
+
+# Local fallback settings
+use_local_fallback: true
+local_data_dir: "data/sections"
+
+# Section files 
+sections:
+  contact: "contact.yaml"
+  profile: "profile.yaml" 
+  skills: "skills.yaml"
+  languages: "languages.yaml"
+  education: "education.yaml"
+  experience: "experience.yaml"
+  workshops: "workshops.yaml"
+  awards: "awards.yaml"
+  publications: "publications.yaml"
+  oral_presentations: "oral_presentations.yaml"
+  posters: "posters.yaml"
+  packages: "packages.yaml"

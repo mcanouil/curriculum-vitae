@@ -1,8 +1,8 @@
 ---
 params:
   author: "Benjamin Black"
-  xlsx: "data/cv.xlsx"
-  bib: "data/cv.bib"
+  github_repo: "blenback/profi"
+  branch: "main"
   picture: "data/cv_new.png"
 title: '`r sprintf("%s - Curriculum Vitæ", params[["author"]])`'
 author: '`r params[["author"]]`'
@@ -47,21 +47,69 @@ knitr::include_graphics(params[["picture"]])
 ```
 
 ```{r}
-# Print contents of all sections, comment out sections that you do not want to include
+# Print contents of all sections using remote GitHub functions
+# Comment out sections that you do not want to include
 cat(
-  contact_section(xlsx = params[["xlsx"]], sheet = "contact"),
-  skills_section(xlsx = params[["xlsx"]], sheet = "skills"),
-  languages_section(xlsx = params[["xlsx"]], sheet = "languages"),
+  contact_section_remote(
+    github_repo = params[["github_repo"]],
+    branch = params[["branch"]]
+  ),
+  skills_section_remote(
+    github_repo = params[["github_repo"]],
+    branch = params[["branch"]]
+  ),
+  languages_section_remote(
+    github_repo = params[["github_repo"]],
+    branch = params[["branch"]]
+  ),
   title_section(author = params[["author"]]),
-  profil_section(xlsx = params[["xlsx"]], sheet = "profil", use_headings = FALSE),
-  education_section(xlsx = params[["xlsx"]], sheet = "education", page_break_after = FALSE, include_sections = c("thesis", "awards")),  
-  experience_section(xlsx = params[["xlsx"]], sheet = "experience", page_break_after = FALSE, use_bullets = FALSE, reverse_order = FALSE),  
-  workshop_section(xlsx = params[["xlsx"]], sheet = "workshop", page_break_after = FALSE, colour = "#33333"),
-  awards_section(xlsx = params[["xlsx"]], sheet = "awards", page_break_after = FALSE, colour = "#33333"),
-  articles_section(bib = params[["bib"]], author = params[["author"]], page_break_after = FALSE),
-  oral_section(xlsx = params[["xlsx"]], sheet = "oral", page_break_after = FALSE, colour = "#33333"),
-  #poster_section(xlsx = params[["xlsx"]], sheet = "poster", page_break_after = FALSE, colour = "#33333"),
-  #packages_section(xlsx = params[["xlsx"]], sheet = "packages", author = params[["author"]], page_break_after = FALSE),
+  profil_section_remote(
+    github_repo = params[["github_repo"]],
+    branch = params[["branch"]]
+  ),
+  education_section_remote(
+    github_repo = params[["github_repo"]],
+    branch = params[["branch"]],
+    page_break_after = FALSE,
+    include_sections = c("thesis", "awards")
+  ),
+  experience_section_remote(
+    github_repo = params[["github_repo"]],
+    branch = params[["branch"]],
+    page_break_after = FALSE,
+    use_bullets = FALSE,
+    reverse_order = FALSE
+  ),
+  workshop_section_remote(
+    github_repo = params[["github_repo"]],
+    branch = params[["branch"]],
+    page_break_after = FALSE,
+    colour = "#333333"
+  ),
+  awards_section_remote(
+    github_repo = params[["github_repo"]],
+    branch = params[["branch"]],
+    page_break_after = FALSE,
+    colour = "#333333"
+  ),
+  articles_section(
+    bib = "data/cv.bib",
+    author = params[["author"]],
+    page_break_after = FALSE
+  ),
+  oral_section_remote(
+    github_repo = params[["github_repo"]],
+    branch = params[["branch"]],
+    page_break_after = FALSE,
+    colour = "#333333"
+  ),
+  # poster_section_remote(
+  #   github_repo = params[["github_repo"]],
+  #   branch = params[["branch"]],
+  #   page_break_after = FALSE,
+  #   colour = "#333333"
+  # ),
+  # packages_section_remote(github_repo = params[["github_repo"]], branch = params[["branch"]], page_break_after = FALSE),
   disclaimer_section(text = NULL),
   sep = "\n"
 )

@@ -4,15 +4,20 @@
 #' @param colour The color of the logo (default is "#333333").
 #' @return A formatted string with the logo and link.
 add_item_logo <- function(
-    url,
-    type,
-    colour = "#333333"
-    ) {
-  
-  if(type == "github") {
+  url,
+  type,
+  colour = "#333333"
+) {
+  string <- url # Initialize string variable
+
+  if (type == "github") {
     string <- sub(
       "[GitHub]", #pattern
-      paste0("[", fontawesome::fa("github", fill = colour), " GitHub repository]"), #replacement
+      paste0(
+        "[",
+        fontawesome::fa("github", fill = colour),
+        " GitHub repository]"
+      ), #replacement
       # x (string)
       sub(
         pattern = "(.*)https://github.com/(.*)",
@@ -22,17 +27,21 @@ add_item_logo <- function(
       fixed = TRUE
     )
   }
-  
-  if(type == "presentation") {
+
+  if (type == "presentation") {
     string <- sub(
       "[Presentation]", #pattern
-      paste0("[", fontawesome::fa("file-powerpoint", fill = colour), " Slides]"), #replacement
+      paste0(
+        "[",
+        fontawesome::fa("file-powerpoint", fill = colour),
+        " Slides]"
+      ), #replacement
       paste0("[Presentation](", url, ")"),
       fixed = TRUE
     )
   }
-  
-  if(type == "website") {
+
+  if (type == "website") {
     string <- sub(
       "[Website]", #pattern
       paste0("[", fontawesome::fa("globe", fill = colour), " Website]"),
@@ -44,6 +53,22 @@ add_item_logo <- function(
       fixed = TRUE
     )
   }
-  
+
+  if (type == "link") {
+    string <- fontawesome::fa("link", fill = colour)
+  }
+
+  if (type == "cran") {
+    string <- fontawesome::fa("r-project", fill = colour)
+  }
+
+  if (type == "gitlab") {
+    string <- fontawesome::fa("gitlab", fill = colour)
+  }
+
+  if (type == "bitbucket") {
+    string <- fontawesome::fa("bitbucket", fill = colour)
+  }
+
   return(string)
 }
