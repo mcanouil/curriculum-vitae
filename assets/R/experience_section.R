@@ -1,107 +1,125 @@
-#' Create a professional experience section for a CV
-#' @description
-#' This function creates a professional experience section for a CV from an Excel sheet.
-#' #' @param xlsx Path to the Excel file containing the experience data.
-#' #' @param sheet Name of the sheet in the Excel file to read data from.
-#' #' @param page_break_after Logical value indicating whether to insert a page break after the section.
-#' #' @param use_bullets Logical value indicating whether to use bullet points for activities.
-#' #' @param reverse_order Logical value indicating whether to reverse the order of entries (most recent first).
-#' @return A character vector containing the formatted experience section.
-experience_section <- function(
-    xlsx = "data/cv.xlsx",
-    sheet = "experience",
-    page_break_after = FALSE,
-    use_bullets = TRUE,
-    reverse_order = TRUE
-    ) {
-  
-  # Load required libraries
-  library(data.table)
-  
-  # Read text from xlsx
-  text <- read_excel_sheet(xlsx, sheet)
-  
-  # Convert to data.table
-  text <- data.table::setDT(text)
-  
+experience_section_remote <- function(
+  github_repo = NULL,
+  branch = "main",
+  page_break_after = FALSE,
+  use_bullets = TRUE,
+  reverse_order = TRUE
+) {
+  experience_data <- read_cv_data_remote(github_repo, "experience", branch)
+
+  # Convert to data frame
+  experience_df <- do.call(rbind, lapply(experience_data, as.data.frame))
+
   if (use_bullets) {
-    # OPTION TO SPLIT ACTIVITIES INTO BULLET POINT LIST
-    # Put the unicode character for bullet in front of each activities entry
-    # Options for different bullet sizes:
-    # "\u2022" - standard bullet •
-    # "\u25CF" - large black circle ●
-    # "\u2B24" - large black circle ⬤
-    # "\u25A0" - black square ■
-    
-    # Solution 1: Use non-breaking space after bullet to prevent wrapping
-    bullet_char <- "\u25CF\u00A0"  # Large bullet + non-breaking space
-    
-    # Alternative solutions (uncomment to use):
-    # bullet_char <- "\u2022"  # Go back to standard bullet
-    # bullet_char <- "\u25CF "  # Large bullet with regular space
-    # bullet_char <- "\u25AA "  # Small black square ▪
-    
-    text$activities <- sapply(text$activities, function(x) {
-      open_bullet <- paste0(bullet_char, x)  # Removed extra space since bullet_char includes it
-      # Replace instances of '.' with the unicode character "\n\bullet" except the last instance
+    # Use bullet points for activities
+    bullet_char <- "\u25CF\u00A0" # Large bullet + non-breaking space
+
+    experience_df$activities <- sapply(experience_df$activities, function(x) {
+      open_bullet <- paste0(bullet_char, x)
+      # Replace instances of '.' with bullet points
       pattern_replacement <- paste0(". \n\n", bullet_char)
       open_bullet <- gsub("\\.", pattern_replacement, open_bullet)
-      # Remove the last instance in the string of "\n\bullet"
+      # Remove the last instance
       final_pattern <- paste0("\\. \n\n", gsub("(\\W)", "\\\\\\1", bullet_char))
-      open_bullet <- stringi::stri_replace_last(open_bullet,
-                                                replacement = ".",
-                                                regex = final_pattern)
+      open_bullet <- stringi::stri_replace_last(
+        open_bullet,
+        replacement = ".",
+        regex = final_pattern
+      )
       return(open_bullet)
     })
-    
-    # Create the formatted text with bullet points
+
+    # Create formatted text
     if (reverse_order) {
-      # Reverse order (.N:1) - most recent first
-      formatted_text <- text[.N:1, paste0(
-        "### ", position, "\n\n",
-        institute, "\n\n",
-        city, "\n\n",
-        start, " - ", end, "\n\n",
-        "\n\n", activities, "\n\n\n\n"
-      )]
+      # Reverse order - most recent first
+      formatted_text <- sapply(nrow(experience_df):1, function(i) {
+        paste0(
+          "### ",
+          experience_df[i, "position"],
+          "\n\n",
+          experience_df[i, "institute"],
+          "\n\n",
+          experience_df[i, "city"],
+          "\n\n",
+          experience_df[i, "start"],
+          " - ",
+          experience_df[i, "end"],
+          "\n\n",
+          "\n\n",
+          experience_df[i, "activities"],
+          "\n\n\n\n"
+        )
+      })
     } else {
-      # Original order (1:.N) - chronological order
-      formatted_text <- text[1:.N, paste0(
-        "### ", position, "\n\n",
-        institute, "\n\n",
-        city, "\n\n",
-        start, " - ", end, "\n\n",
-        "\n\n", activities, "\n\n\n\n"
-      )]
+      # Original order
+      formatted_text <- sapply(1:nrow(experience_df), function(i) {
+        paste0(
+          "### ",
+          experience_df[i, "position"],
+          "\n\n",
+          experience_df[i, "institute"],
+          "\n\n",
+          experience_df[i, "city"],
+          "\n\n",
+          experience_df[i, "start"],
+          " - ",
+          experience_df[i, "end"],
+          "\n\n",
+          "\n\n",
+          experience_df[i, "activities"],
+          "\n\n\n\n"
+        )
+      })
     }
-    
   } else {
-    # OPTION WITHOUT BULLET POINTS - activities in italics
-    # Create the formatted text without bullet points
+    # Activities in italics without bullet points
     if (reverse_order) {
-      # Reverse order (.N:1) - most recent first
-      formatted_text <- text[.N:1, paste0(
-        "### ", position, "\n\n",
-        institute, "\n\n",
-        city, "\n\n",
-        start, " - ", end, "\n\n",
-        "\n\n*", activities, "*\n\n\n\n"
-      )]
-    } else {    
-      # Original order (1:.N) - chronological order
-      formatted_text <- text[1:.N, paste0(
-        "### ", position, "\n\n",
-        institute, "\n\n",
-        city, "\n\n",
-        start, " - ", end, "\n\n",
-        "\n\n*", activities, "*\n\n\n\n"
-      )]
+      formatted_text <- sapply(nrow(experience_df):1, function(i) {
+        paste0(
+          "### ",
+          experience_df[i, "position"],
+          "\n\n",
+          experience_df[i, "institute"],
+          "\n\n",
+          experience_df[i, "city"],
+          "\n\n",
+          experience_df[i, "start"],
+          " - ",
+          experience_df[i, "end"],
+          "\n\n",
+          "\n\n*",
+          experience_df[i, "activities"],
+          "*\n\n\n\n"
+        )
+      })
+    } else {
+      formatted_text <- sapply(1:nrow(experience_df), function(i) {
+        paste0(
+          "### ",
+          experience_df[i, "position"],
+          "\n\n",
+          experience_df[i, "institute"],
+          "\n\n",
+          experience_df[i, "city"],
+          "\n\n",
+          experience_df[i, "start"],
+          " - ",
+          experience_df[i, "end"],
+          "\n\n",
+          "\n\n*",
+          experience_df[i, "activities"],
+          "*\n\n\n\n"
+        )
+      })
     }
   }
-  
+
   # Return the result
   if (page_break_after) {
-    c("## Professional Experience {data-icon=laptop .break-after-me}", formatted_text)
+    c(
+      "## Professional Experience {data-icon=laptop .break-after-me}",
+      formatted_text
+    )
   } else {
     c("## Professional Experience {data-icon=laptop}", formatted_text)
   }

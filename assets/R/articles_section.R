@@ -1,157 +1,100 @@
-#devtools::install_github("ropensci/bib2df")
-library(bib2df)
+articles_section_remote <- function(
+  github_repo = NULL,
+  branch = "main",
+  page_break_after = FALSE,
+  colour = "#333333"
+) {
+  publications_data <- read_cv_data_remote(github_repo, "publications", branch)
 
-#' Create a section for articles in a CV
-#' @description
-#' This function creates a section for articles in a CV from a BibTeX file.
-#' @param bib Path to the BibTeX file containing the articles.
-#' @param author The author to highlight in the articles section.
-#' @param page_break_after Logical value indicating whether to insert a page break after the section.
-#' @return A character vector containing the formatted articles section.
-articles_section <- function(
-    bib = "data/cv.bib",
-    author = "Black",
-    page_break_after = FALSE
-    ) {
-  
-  #read the bib tex file
-  articles <- bib2df(bib)
-  
-  # seperate any rows for which year == "In Review"
-  in_review <- articles[articles$YEAR == "In Review",]
-  
-  # remove the rows for which year == "In Review"
-  articles <- articles[articles$YEAR != "In Review",]
-  
-  # convert YEAR column to numeric
-  articles$YEAR <- as.numeric(articles$YEAR)
-  
-  #add a date column by pasting together year and month and adding arbitrary day
-  # articles$DATE <- apply(articles,1, function(x){as.Date(paste0(x$YEAR, "-", x$MONTH, "-01"), "%Y-%b-%d")})
-  
-  #sort the rows according to descending YEAR
-  articles <- articles[rev(order(articles$YEAR)),]
-  
-  # add the in review articles at the head of the df
-  if(nrow(in_review) > 0){
-    articles <- rbind(in_review, articles)
-  }
-  
-  #loop over entries formatting as strings
-  strings <- c(apply(articles,1, function(article){
-    
-    #vector required fields
-    required_fields <- c("TITLE", "AUTHOR","YEAR","JOURNAL")
-    
-    #check which of the required fields are columns in the article
-    reqs <- sapply(required_fields, function(field){field %in% names(article)})
-    
-    #subset to those present
-    required_fields <- required_fields[reqs]
-    
-    #check for non-na entries
-    Non_NA_reqs <- sapply(required_fields, function(field){ if(any(!is.na(article[[field]]))){TRUE}else{FALSE}})
-    
-    #subset to only non-NA entries
-    required_fields <- required_fields[Non_NA_reqs]
-    
-    #extract the entries from article
-    fields <- as.list(article[required_fields])
-    
-    #convert the authors to a single string
-    fields$AUTHOR <- paste(fields$AUTHOR, collapse = ", ")
-    
-    #within the string replace 'Black, B.' with "<u>Black, B.</u>"
-    fields$AUTHOR <- gsub("Black, B.", "<u>Black, B.</u>", fields$AUTHOR)
-    
-    #convert all entries to character
-    fields <- lapply(fields, as.character)
-    
-    #check which of the custom fields DATA, CODE, PREPRINT or RESULTS are non-empty
-    custom_fields <- c("DOI", "DATA", "CODE", "PREPRINT", "RESULTS")
-    
-    #check which of the custom fields are columns in the article
-    customs <- sapply(custom_fields, function(field){field %in% names(article)})
-    
-    #subset to only those that are columns
-    custom_fields <- custom_fields[customs]
-    
-    #subset to non-NA entries
-    Non_NA_customs <- sapply(custom_fields, function(field){ if(any(!is.na(article[[field]]))){TRUE}else{FALSE}})
-    
-    #subset to only non-NA entries
-    custom_fields <- custom_fields[Non_NA_customs]
-    
-    #get the entries from the article
-    custom_entries <- as.list(article[custom_fields])
-    
-    #modify the data entry to include an icon and string and link both to the url 
-    if("DATA" %in% names(custom_entries)){
-      custom_entries$DATA <- paste0(" [ ", fontawesome::fa("database", fill = "#333333"), " Data]", "(", custom_entries$DATA, ")")
-    }
-    
-    if("DOI" %in% names(custom_entries)){
-      #add an icon to the DOI
-      custom_entries$DOI <- paste0("[", fontawesome::fa("scroll", fill = "#333333"), " Read](", custom_entries$DOI, ")")
-    }
-    
-    #modify the CODE entry
-    if("CODE" %in% names(custom_entries)){
-      custom_entries$CODE <- paste0(" [ ", fontawesome::fa("code", fill = "#333333"), " Code]", "(", custom_entries$CODE, ")")
-    }
-    
-    # if length of custom fields is 0 then create the basic string
-    if(length(custom_fields) == 0){
-      
-      # Build string using paste0 instead of sprintf
-      result_string <- paste0(
-        "### ", fields$TITLE, "\n\n",
-        fields$AUTHOR, "\n\nN/A\n\n",
-        fields$YEAR, "\n\n *", fields$JOURNAL, "*\n\n",
-        "::: aside\n\n\n:::"
-      )
-    } else if(length(custom_fields) != 0){
-      
-      # Don't add \n between entries
-      custom_entries <- lapply(custom_entries, function(x) {
-        paste0('<span class="contact-item">', x, '</span>')
-      })
-      
-      # Wrap all in a container div
-      custom_block <- paste0(
-        '<div class="contact-inline">',
-        paste(custom_entries, collapse = "\n"),
-        '</div>'
-      )
-      
-      # Build the full result string
-      result_string <- paste0(
-        "### ", fields$TITLE, "\n\n",
-        fields$AUTHOR, "\n\nN/A\n\n",
-        fields$YEAR, "\n\n *", fields$JOURNAL, "*\n\n",
+  # Reverse order (most recent first)
+  publications_data <- publications_data[length(publications_data):1]
+
+  # Create formatted entries - match actual YAML structure
+  text <- sapply(
+    publications_data,
+    function(pub) {
+      # Build links section
+      links <- character(0)
+
+      # DOI link
+      if (!is.na(pub$doi) && pub$doi != "") {
+        links <- c(
+          links,
+          paste0(
+            '[<svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:',
+            colour,
+            ';"><path d="M96 0C78.3 0 64 14.3 64 32v416c0 17.7 14.3 32 32 32h288c17.7 0 32-14.3 32-32V128l-128-128H96zM288 128H416L288 0v128z"/></svg> Read](',
+            pub$doi,
+            ')'
+          )
+        )
+      }
+
+      # Data link
+      if (!is.na(pub$data_url) && pub$data_url != "") {
+        links <- c(
+          links,
+          paste0(
+            '[<svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:',
+            colour,
+            ';"><path d="M448 80v48c0 44.2-100.3 80-224 80S0 172.2 0 128V80C0 35.8 100.3 0 224 0S448 35.8 448 80zM393.2 214.7c20.8-7.4 39.9-16.9 54.8-28.6V288c0 44.2-100.3 80-224 80S0 332.2 0 288V186.1c14.9 11.8 34 21.2 54.8 28.6C99.7 230.7 159.5 240 224 240s124.3-9.3 169.2-25.3zM0 346.1c14.9 11.8 34 21.2 54.8 28.6C99.7 390.7 159.5 400 224 400s124.3-9.3 169.2-25.3c20.8-7.4 39.9-16.9 54.8-28.6V432c0 44.2-100.3 80-224 80S0 476.2 0 432V346.1z"/></svg> Data](',
+            pub$data_url,
+            ')'
+          )
+        )
+      }
+
+      # Code link
+      if (!is.na(pub$code_url) && pub$code_url != "") {
+        links <- c(
+          links,
+          paste0(
+            '[<svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:',
+            colour,
+            ';"><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zm80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3L562.7 256l-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3z"/></svg> Code](',
+            pub$code_url,
+            ')'
+          )
+        )
+      }
+
+      # Build the aside content
+      aside_content <- if (length(links) > 0) {
+        paste0(
+          '<div class="contact-inline">',
+          paste(
+            paste0('<span class="contact-item">', links, '</span>'),
+            collapse = "\n"
+          ),
+          '</div>'
+        )
+      } else {
+        ""
+      }
+
+      paste0(
+        "### ",
+        pub$title,
+        "\n\n",
+        gsub("Black, B\\.", "<u>Black, B.</u>", pub$authors),
+        "\n\n",
+        "N/A\n\n",
+        pub$year,
+        "\n\n",
+        "*",
+        pub$journal,
+        "*\n\n",
         "::: aside\n",
-        custom_block,  # << your contact icons wrapped here
-        "\n:::\n"
+        aside_content,
+        "\n:::\n\n\n\n"
       )
-      
-    }
-    
-    return(result_string)
-    
-    
-    
-  }, simplify = TRUE))
-  
-  #count number of articles
-  articles_count <- length(strings)
-  
-  #prepare section header
+    },
+    USE.NAMES = FALSE
+  )
+
   if (page_break_after) {
-    return(c("## Publications  {data-icon=newspaper .break-after-me}", strings))
+    c("## Publications  {data-icon=newspaper .break-after-me}", text)
   } else {
-    return(c("## Publications  {data-icon=newspaper}", strings))
+    c("## Publications  {data-icon=newspaper}", text)
   }
-  
 }
-
-

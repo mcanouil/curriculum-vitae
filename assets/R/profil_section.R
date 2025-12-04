@@ -1,20 +1,13 @@
-profil_section <- function(xlsx = "data/cv.xlsx", sheet = "profil", use_headings = TRUE) {
-  dt <- read_excel_sheet(xlsx, sheet)[show == 1]
-  
-  if (use_headings) {
-    # Create heading levels with title
-    dt[, level := vapply(
-      X = level,
-      FUN = function(.x) {
-        paste(rep("#", each = as.numeric(.x) + 2), collapse = "")
-      },
-      FUN.VALUE = character(1)
-    )]
-    dt[, output := paste0(level, " ", title, "\n\n", paragraph, "\n\n")]
-  } else {
-    # No headings or titles, just paragraphs
-    dt[, output := paste0(paragraph, "\n\n")]
-  }
-  
-  return(dt$output)
+profil_section_remote <- function(
+  github_repo = NULL,
+  branch = "main",
+  use_headings = TRUE
+) {
+  profile_data <- read_cv_data_remote(github_repo, "profile", branch)
+
+  # The profile data is a list with one item containing text
+  text <- profile_data[[1]]$text
+
+  # Simply return the text with appropriate spacing
+  return(paste0(text, "\n\n"))
 }
