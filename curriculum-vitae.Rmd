@@ -92,10 +92,11 @@ cat(
     page_break_after = FALSE,
     colour = "#333333"
   ),
-  articles_section(
-    bib = "data/cv.bib",
-    author = params[["author"]],
-    page_break_after = FALSE
+  articles_section_remote(
+    github_repo = params[["github_repo"]],
+    branch = params[["branch"]],
+    page_break_after = FALSE,
+    colour = "#333333"
   ),
   oral_section_remote(
     github_repo = params[["github_repo"]],

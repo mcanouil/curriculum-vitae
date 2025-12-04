@@ -83,9 +83,21 @@ jobs:
             any::yaml
             any::httr
             any::stringi
-      - name: Render curriculum-vitae.Rmd
+      - name: Install Chrome for PDF rendering
+        if: github.event_name != 'schedule' || steps.check-changes.outputs.changes_detected == 'true'
+        run: |
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+      
+      - name: Render curriculum-vitae.Rmd to HTML
         if: github.event_name != 'schedule' || steps.check-changes.outputs.changes_detected == 'true'
         run: Rscript -e 'rmarkdown::render("curriculum-vitae.Rmd", output_file = "index.html", output_dir = "docs")'
+      
+      - name: Render curriculum-vitae.Rmd to PDF
+        if: github.event_name != 'schedule' || steps.check-changes.outputs.changes_detected == 'true'
+        run: Rscript -e 'pagedown::chrome_print("curriculum-vitae.Rmd", output = "docs/curriculum-vitae.pdf")'
       
       - name: Store remote SHA for next run
         if: steps.check-changes.outputs.changes_detected == 'true'
