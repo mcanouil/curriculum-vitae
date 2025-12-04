@@ -5,6 +5,11 @@ on:
   workflow_dispatch:
   push:
     branches: main
+  repository_dispatch:
+    types: [cv-data-updated]
+  schedule:
+    # Check for updates daily at 6 AM UTC
+    - cron: '0 6 * * *'
 
 permissions:
   contents: read
@@ -26,11 +31,48 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
+      - name: Check for changes in remote CV data repository
+        id: check-changes
+        if: github.event_name == 'schedule'
+        run: |
+          # Install jq if not available
+          sudo apt-get update && sudo apt-get install -y jq
+          # Get the latest commit SHA from the remote blenback/profi repository
+          REMOTE_SHA=$(curl -s https://api.github.com/repos/blenback/profi/commits/main | jq -r '.sha')
+          echo "Remote SHA: $REMOTE_SHA"
+          
+          # Check if we have a stored SHA from the last run
+          if [ -f ".last-remote-sha" ]; then
+            LAST_SHA=$(cat .last-remote-sha)
+            echo "Last SHA: $LAST_SHA"
+            if [ "$REMOTE_SHA" = "$LAST_SHA" ]; then
+              echo "No changes detected in remote repository"
+              echo "changes_detected=false" >> $GITHUB_OUTPUT
+            else
+              echo "Changes detected in remote repository"
+              echo "changes_detected=true" >> $GITHUB_OUTPUT
+              echo "$REMOTE_SHA" > .last-remote-sha
+            fi
+          else
+            echo "First run - assuming changes"
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+            echo "$REMOTE_SHA" > .last-remote-sha
+          fi
+          
+          # For manual triggers and pushes, always proceed
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+          fi
       - name: Setup Pages
+        if: github.event_name != 'schedule' || steps.check-changes.outputs.changes_detected == 'true'
         uses: actions/configure-pages@v4 #gets github page to update
       - uses: r-lib/actions/setup-pandoc@v2 #sets up Pandoc
+        if: github.event_name != 'schedule' || steps.check-changes.outputs.changes_detected == 'true'
       - uses: r-lib/actions/setup-r@v2 #sets up r
+        if: github.event_name != 'schedule' || steps.check-changes.outputs.changes_detected == 'true'
       - uses: r-lib/actions/setup-r-dependencies@v2 #sets up r packages and their dependencies
+        if: github.event_name != 'schedule' || steps.check-changes.outputs.changes_detected == 'true'
         with:
           packages: |
             any::data.table
@@ -38,12 +80,30 @@ jobs:
             any::pagedown
             any::readxl
             any::bib2df
+            any::yaml
+            any::httr
+            any::stringi
       - name: Render curriculum-vitae.Rmd
+        if: github.event_name != 'schedule' || steps.check-changes.outputs.changes_detected == 'true'
         run: Rscript -e 'rmarkdown::render("curriculum-vitae.Rmd", output_file = "index.html", output_dir = "docs")'
+      
+      - name: Store remote SHA for next run
+        if: steps.check-changes.outputs.changes_detected == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          if [ -f ".last-remote-sha" ]; then
+            git add .last-remote-sha
+            git commit -m "Update last remote SHA" || echo "No changes to commit"
+            git push || echo "No changes to push"
+          fi
+      
       - name: Upload artifact
+        if: github.event_name != 'schedule' || steps.check-changes.outputs.changes_detected == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'docs'
       - name: Deploy to GitHub Pages
+        if: github.event_name != 'schedule' || steps.check-changes.outputs.changes_detected == 'true'
         id: deployment
         uses: actions/deploy-pages@v4
