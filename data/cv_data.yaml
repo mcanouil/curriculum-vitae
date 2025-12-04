@@ -1,0 +1,388 @@
+contact:
+  position: Postdoctoral researcher
+  institute: '[ETH Planning of Landscape and Urban systems](https://plus.ethz.ch/)'
+  city: Zurich, Switzerland
+  email: bblack@ethz.ch
+  phone: ''
+  website: https://blenback.github.io/
+  orcid: 0000-0002-8113-2114
+  linkedin: ben-black-9889a1150
+  github: blenback
+  twitter: Blen_Back
+  researchgate: https://www.researchgate.net/profile/Benjamin-Black-5
+profile:
+- text: 'Postdoctoral researcher with a professional background in conservation, specialising in socio-environmental systems modelling to support evidence-based policy and planning. Passionate about advancing open science, communicating research beyond academia, and mentoring others in modelling, programmatic data analysis, and visualisation. Experienced in managing small and large teams, especially in cross-cultural and interdisciplinary settings, with a strong commitment to collaborative and inclusive research.'
+skills:
+- subject: R (Shiny, Quarto)
+  level: advanced
+- subject: Dinamica EGO
+  level: advanced
+- subject: Netica
+  level: advanced
+- subject: MS Office
+  level: advanced
+- subject: ArcGIS
+  level: intermediate
+- subject: QGIS
+  level: intermediate
+- subject: CSS
+  level: intermediate
+- subject: Git
+  level: intermediate
+- subject: Python
+  level: basic
+- subject: HTML
+  level: basic
+- subject: Docker
+  level: basic
+- subject: JavaScript
+  level: basic
+- subject: Bash
+  level: basic
+- subject: Slurm
+  level: basic
+languages:
+- subject: English
+  level: Native
+- subject: German
+  level: B2
+education:
+- degree: BSc with 1st Class Honours in Biological Sciences
+  university: Edinburgh Napier University
+  city: Edinburgh, Scotland
+  start: Sep. 2010
+  end: Jun. 2014
+  description: ''
+  thesis: '[Simulating the future potential of degraded Mangrove plots using field
+    data from Kenya](http://dx.doi.org/10.13140/RG.2.2.20232.49923)'
+  awards: University medal (highest average mark on degree route); Lawrence Ho student
+    prize; Dennis Aw award.
+- degree: MSc in Environmental Sciences, Policy and Management (MESPOM)
+  university: "Central\r\nEuropean University, University of Manchester, Lund University,
+    University of\r\nthe Aegean"
+  city: Hungary, Greece, UK
+  start: Sep. 2018
+  end: Jun. 2020
+  description: ''
+  thesis: '[Assessing the ecological effectiveness of protected areas in Cambodia:
+    a quasi-experimental counterfactual estimation of avoided deforestation](http://dx.doi.org/10.13140/RG.2.2.28621.10727)'
+  awards: 'Outstanding academic achievement (highest GPA in cohort: 4.00/4.00)'
+- degree: Doctor of Civil Engineering
+  university: ETH Zürich, chair of Planning of Landscape Urban Systems (PLUS)
+  city: Zürich, Switzerland
+  start: Oct. 2020
+  end: Jun. 2025
+  description: My research, situated within the [**ValPar.CH**](https://valpar.ch/index_de.php)
+    and [**NASCENT-Peru**](https://nascent-peru.github.io/) projects focused on the
+    development  of scenario-based modelling approaches to explore desirable futures
+    for landscapes.
+  thesis: '[Identifying effective area-based conservation strategies under uncertainties](https://blenback.github.io/presentations/2025_05_6_PhD_defence/)'
+  awards: Nominated for the ETH medal for outstanding doctoral theses
+experience:
+- position: Freelance Research Consultant
+  institute: Prognos AG
+  city: Zürich, Switzerland
+  start: May. 2025
+  end: Jul. 2025
+  activities: Performed Land Use and Land Cover change modelling of Shared Socioeconomic
+    Pathways for Switzerland as part of project funded by the Swiss National Centre
+    for Climate Services
+- position: Biodiversity and SMART Intern
+  institute: The Wildlife Conservation Society (WCS)
+  city: Phnom Penh, Cambodia
+  start: Jul. 2019
+  end: Aug. 2019
+  activities: Developed a programmatic routine to expedite the collection of external
+    data from the IUCN, EDGE ranking and CITES to produce protected area species inventories
+    in line with Darwin Core standards. Assisted in the training of new community
+    biodiversity rangers in the process of SMART data collection in the field.
+- position: Student Affairs Manager
+  institute: "The School for Field Studies Center for Conservation and Development
+    Studies in the Lower Mekong"
+  city: Siem Reap, Cambodia
+  start: Jan. 2018
+  end: Aug. 2018
+  activities: Coordinated safety and risk management as well as logistics for all
+    centre activities including multi day field trips to remote locations. Served
+    as the medical point person, facilitating first aid training for staff, while
+    also supporting student well-being and cultural adaptation in a pastoral role.
+- position: Project Manager & Volunteer Co-ordinator
+  institute: Elephant Livelihood Initiatives and Environment (E.L.I.E)
+  city: Mondulkiri, Cambodia
+  start: April. 2015
+  end: June. 2017
+  activities: "Managed a diverse team (Bunong Indigenous minority, and Khmer) of 48
+    staff. Oversaw the operation of an ecotourism project receiving 4000+ visitors
+    a year. Facilitated ongoing capacity building of staff and development of the
+    volunteer program. \r\nCompiled budgets, managed cash flow, and created detailed
+    financial and organizational reports."
+- position: Independent Consultant Srae Y Community ecotourism project
+  institute: World Wide Fund for Nature (WWF)
+  city: Mondulkiri, Cambodia
+  start: Oct. 2015
+  end: Dec. 2015
+  activities: Undertook site visits to assess the status of the project and prepared
+    a report, detailing strategies to make the project operational and sustainable.
+    Planned and delivered a series of training sessions to project staff and stakeholders
+    from other communities engaged in ecotourism.
+- position: Volunteer Development Officer & Conservation Support Assistant
+  institute: The Conservation Volunteers (TCV)
+  city: Central Scotland
+  start: May 2013
+  end: Apr. 2015
+  activities: Planned, developed and delivered the Ochils Landscape Partnerships volunteering
+    program and two TCV community health projects. Engaged with, and ensured the safety
+    and wellbeing of a diverse cross section of volunteers, many with physical or
+    mental disabilities as well as young adults/children.
+workshops:
+- title: 'Reproducible Research with R and Quarto: Workflows for data, projects and
+    publications'
+  location: Berlin, Germany
+  start: Sep. 2024
+  end: ''
+  description: Three hour workshop as part of Landscape 2024 conference
+  url: https://blenback.github.io/R-for-Reproducible-Research/
+- title: 'Participatory Environmental Modelling: MSc course at ETH Zürich'
+  location: Zürich, Switzerland
+  start: Feb. 2021
+  end: Jul. 2024
+  description: Designed and taught an MSc-level course integrating students and practitioners
+    to develop simulation models for real-world environmental decision-making.
+  url: ''
+awards:
+- name: 'NAture-positive SCenarios for ENvironmental Transitions Peru (NASCENT-PERU)'
+  institute: Swiss Re Foundation
+  city: Zürich, Switzerland
+  date: Jun. 2023
+  description: Funded project under the SwissRE Biodiversity and Ecosystem Services
+    Scenarios Modelling Initiative
+  url: https://plus.ethz.ch/research/forschungsprojekte/NASCENT-PERU.html/
+  link_type: website
+- name: 'Future development of biodiversity and ecosystem services as a basis for the revision of the sectoral plan for biodiversity' 
+  institute: Canton of Bern Department of Agriculture and Nature
+  city: Bern, Switzerland
+  date: Dec. 2024
+  description: Project in collaboration with the Wyss Academy for Nature to generate
+    policy-relevant evidence supporting the canton’s revision of the sectoral biodiversity
+    plan.
+  url: ''
+  link_type: website
+presentations:
+- title: 'Ex-ante identification of policy interventions to secure a functioning ecological
+    infrastructure: A participatory Bayesian Network approach in Switzerland'
+  event: 3rd Ecosystem Services Partnership Europe Regional conference
+  location: Tartu, Estonia
+  date: Jun. 2019
+  type: ''
+  url: https://blenback.github.io/presentations/2021_06_09_ESP/
+- title: Combining filter and embedded approaches to improve variable selection in
+    land use change Cellular Automata models
+  event: 11th International Environmental Modelling and Software Society conference
+  location: "\r\nBrussels, Belgium"
+  date: Jul. 2022
+  type: ''
+  url: https://blenback.github.io/presentations/2022_07_01_IEMSs_model_pres/
+- title: 'ValPar.CH: Integrating land use change, Ecosystem Service and Biodiversity
+    modelling to simulate pathways for a functioning Ecological Infrastructure for
+    Switzerland'
+  event: 11th International Environmental Modelling and Software Society conference
+  location: "\r\nBrussels, Belgium"
+  date: Jul. 2022
+  type: ''
+  url: https://blenback.github.io/presentations/2022_07_01_IEMSs_ValParCH_pres/
+- title: Characterising non-stationarity in predictive models of land use in Swiss
+    mountain parks to inform scenarios for deliberative transformation
+  event: International Mountain conference 2022
+  location: Innsbruck, Austria
+  date: Sep. 2022
+  type: ''
+  url: https://blenback.github.io/presentations/2022_09_13_IMC/
+- title: Broadening the scope of future visions for nature positive futures in Peru
+  event: Swiss Re Institute Resilience Summit 2023
+  location: Zürich, Switzerland
+  date: Nov. 2023
+  type: ''
+  url: https://blenback.github.io/presentations/2023_11_30_SwissRE/
+- title: Normative scenarios of landscape change for Nature-Positive futures in Peru
+  event: World Biodiversity Forum
+  location: Davos, Switzerland
+  date: Jun. 2024
+  type: ''
+  url: https://blenback.github.io/presentations/2024_20_6_WBF/
+- title: Negotiating scenarios of a desirable ecological infrastructure for Switzerland
+  event: 4th Swiss Landscape Congress
+  location: Tramelan, Switzerland
+  date: Sep. 2024
+  type: ''
+  url: https://blenback.github.io/presentations/2024_5_9_Landschaft/
+- title: A “Scope, Simulation and Story” approach to identify future spatial development
+    scenarios
+  event: Computational Urban Planning and Urban Management Conference 2025
+  location: University College London
+  date: Jun. 2025
+  type: ''
+  url: https://virtual.oxfordabstracts.com/event/73503/submission/383
+posters:
+- title: Application of Joint Models in Genetic Association Studies
+  event: ''
+  location: Baltimore, United-States
+  date: Oct. 2015
+  authors: ''
+  url: ''
+- title: 'Single Nucleotide Polymorphisms Associated With Fasting Blood Glucose Trajectory
+    And Type 2 Diabetes Incidence: A Joint Modelling Approach'
+  event: ''
+  location: Toronto, Canada
+  date: Oct. 2016
+  authors: ''
+  url: ''
+- title: 'Single Nucleotide Polymorphisms Associated With Fasting Blood Glucose Trajectory
+    And Type 2 Diabetes Incidence: A Joint Modelling Approach'
+  event: ''
+  location: Lille, France
+  date: Nov. 2016
+  authors: ''
+  url: ''
+- title: '"Variants Génétiques Associés à la Trajectoire de la Glycémie à Jeun et
+    à l’Incidence du Diabète de Type 2: Une Approche par Modèle Joint" (CA-075)'
+  event: ''
+  location: Lille, France
+  date: Mar. 2017
+  authors: ''
+  url: ''
+packages:
+- package: ''
+  description: ''
+  url: ''
+  cran: false
+  version: ''
+- package: ''
+  description: ''
+  url: ''
+  cran: false
+  version: ''
+- package: ''
+  description: ''
+  url: ''
+  cran: false
+  version: ''
+- package: ''
+  description: ''
+  url: ''
+  cran: false
+  version: ''
+- package: ''
+  description: ''
+  url: ''
+  cran: false
+  version: ''
+- package: ''
+  description: ''
+  url: ''
+  cran: false
+  version: ''
+publications:
+- title: 'Counterfactual assessment of protected area avoided deforestation in Cambodia:
+    Trends in effectiveness, spillover effects and the influence of establishment
+    date'
+  authors: Black, B. and Anthony, B. P.
+  year: '2022'
+  journal: Global Ecology and Conservation
+  volume: '38'
+  pages: e02228
+  doi: https://10.1016/j.gecco.2022.e02228
+  data_url: https://zenodo.org/record/6554206#.Y7V79ZDYo2w
+  code_url: ''
+  preprint_url: ''
+  results_url: ''
+- title: 'Re-considering the status quo: Improving calibration of land use change
+    models through validation of transition potential predictions'
+  authors: Black, B. and van Strien, M. J. and Adde, A. and Grêt-Regamey, A.
+  year: '2023'
+  journal: Environmental Modelling \& Software
+  volume: '159'
+  pages: '105574'
+  doi: https://10.1016/j.envsoft.2022.105574
+  data_url: ''
+  code_url: https://doi.org/10.5281/zenodo.10171467
+  preprint_url: ''
+  results_url: ''
+- title: Archetypes of social-ecological-technological systems for managing ecological
+    infrastructure
+  authors: Wicki, S. and Black, B. and Kurmann, M. and Grêt-Regamey, A.
+  year: '2023'
+  journal: Environmental Research Letters
+  volume: '19'
+  pages: 014038
+  doi: https://10.1088/1748-9326/ad1080
+  data_url: ''
+  code_url: ''
+  preprint_url: ''
+  results_url: ''
+- title: 'Broadening the horizon in land use change modelling: Normative scenarios
+    for nature positive futures in Switzerland'
+  authors: Black, B. and Adde, A. and Farinotti, D. and Guisan, A. and Külling, N.
+    and Kurmann, M. and Martin, C. and Mayer, P. and Rabe, S and Streit, J. and Zekollari,
+    H. and Grêt-Regamey, A.
+  year: '2024'
+  journal: Regional Environmental Change
+  volume: '24'
+  pages: ''
+  doi: https://doi.org/10.1007/s10113-024-02261-0
+  data_url: https://doi.org/10.5281/zenodo.8263509
+  code_url: https://doi.org/10.5281/zenodo.12698471
+  preprint_url: ''
+  results_url: ''
+- title: Identifying robust conservation stragies to secure ecosystem service provision
+    under uncertainties
+  authors: Black, B. and Adde, A. and Külling, N. and Büth, C. and Kurmann, M. and
+    Lehmann, A. and Altermatt, F. and Guisan, A. and Gret-Regamey, A.
+  year: In Review
+  journal: Global Environmental Change
+  volume: ''
+  pages: ''
+  doi: ''
+  data_url: ''
+  code_url: ''
+  preprint_url: ''
+  results_url: ''
+- title: Temporal Archetypes of Nature’s Contributions to People for Sustainable Landscape
+    Development
+  authors: Wicki, S., Black, B., Külling, N., Kurmann, M., Wang, J., Lehmann, A.,
+    Gret-Regamey, A.
+  year: In Review
+  journal: Regional Environmental Change
+  volume: ''
+  pages: ''
+  doi: ''
+  data_url: ''
+  code_url: ''
+  preprint_url: ''
+  results_url: ''
+- title: Where will the change come from? Identifying decision-relevant factors in
+    future Land Use and Cover Change ({LUCC}) scenarios to support planning under
+    uncertainty
+  authors: Roman, O., Adey, B., Black, B. and Zeindl, E.
+  year: In Review
+  journal: Futures
+  volume: ''
+  pages: ''
+  doi: ''
+  data_url: ''
+  code_url: ''
+  preprint_url: ''
+  results_url: ''
+- title: 'The PAVE pathway: how to talk about models with people who did(n’t) build
+    them'
+  authors: Bell, A., Troost, C., Filatova, T., Vincenot, C., Qin, C., Fiedler, S.,
+    Lemmen, C., Lynch, I., Pierce, M., Edmonds ,B., McIntire, E., Wang, H., Koralewski,
+    T., Grant, W., Wang, M., Black, B., Grimm, V.
+  year: In Review
+  journal: Bioscience
+  volume: ''
+  pages: ''
+  doi: ''
+  data_url: ''
+  code_url: ''
+  preprint_url: ''
+  results_url: ''

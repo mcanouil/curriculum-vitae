@@ -23,9 +23,9 @@ knitr::opts_chunk$set(
   results = "asis",
   eval = TRUE,
   echo = FALSE,
-  message = FALSE,
+  message = FALSE, # Don't include messages in output (but they show in console)
   error = FALSE,
-  warning = FALSE
+  warning = FALSE # Don't include warnings in output (but they show in console)
 )
 
 # Load functions for each section
@@ -44,6 +44,21 @@ invisible(sapply(
 ```{r}
 #| out.extra: 'style="width: 226px;" id="picture"'
 knitr::include_graphics(params[["picture"]])
+```
+
+```{r}
+#| echo: false
+# Display data source information (messages only show in console, not in output)
+message("🚀 CV Rendering Started")
+message(
+  "📡 Data Source: Remote GitHub repository - ",
+  params[["github_repo"]],
+  " (branch: ",
+  params[["branch"]],
+  ")"
+)
+message("📄 Fallback: Local files in data/sections/ (if GitHub unavailable)")
+message(paste(rep("=", 60), collapse = ""))
 ```
 
 ```{r}
@@ -98,7 +113,7 @@ cat(
     page_break_after = FALSE,
     colour = "#333333"
   ),
-  oral_section_remote(
+  presentations_section_remote(
     github_repo = params[["github_repo"]],
     branch = params[["branch"]],
     page_break_after = FALSE,

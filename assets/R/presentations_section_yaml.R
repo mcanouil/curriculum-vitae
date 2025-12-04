@@ -1,17 +1,24 @@
-oral_section_remote <- function(
-  github_repo = NULL,
-  branch = "main",
+presentations_section_yaml <- function(
+  yaml_file = "data/cv_data.yaml",
   page_break_after = FALSE,
   colour = "#333333"
 ) {
-  oral_data <- read_cv_data_remote(github_repo, "presentations", branch)
+  # Read the YAML file
+  cv_data <- yaml::read_yaml(yaml_file)
+
+  # Extract presentations data
+  presentations_data <- cv_data$presentations
+
+  if (is.null(presentations_data)) {
+    return(c("## Presentations {data-icon=comment-dots}", ""))
+  }
 
   # Reverse order (most recent first)
-  oral_data <- oral_data[length(oral_data):1]
+  presentations_data <- presentations_data[length(presentations_data):1]
 
-  # Create formatted entries - match actual YAML structure
+  # Create formatted entries
   text <- sapply(
-    oral_data,
+    presentations_data,
     function(entry) {
       paste0(
         "### ",
@@ -24,7 +31,7 @@ oral_section_remote <- function(
         entry$date,
         "\n\n",
         "::: aside\n",
-        if (!is.na(entry$url) && entry$url != "") {
+        if (!is.null(entry$url) && !is.na(entry$url) && entry$url != "") {
           add_item_logo(entry$url, colour, type = "presentation")
         } else {
           ""

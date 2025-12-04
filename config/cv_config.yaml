@@ -20,6 +20,6 @@ sections:
   workshops: "workshops.yaml"
   awards: "awards.yaml"
   publications: "publications.yaml"
-  oral_presentations: "oral_presentations.yaml"
+  presentations: "presentations.yaml"
   posters: "posters.yaml"
   packages: "packages.yaml"
