@@ -575,20 +575,24 @@
   #grid(
     columns: (1fr, 1fr, 1fr),
     column-gutter: 16pt,
+    align: center,
     [
-      #text(fill: accent, size: fs.icon)[#fas("\u{f008}")] #h(6pt)
+      #text(fill: accent, size: fs.icon, baseline: fs.icon / 6)[#fas("\u{f008}")] #h(6pt)
       #text(weight: "bold")[Cinephile] \
-      #text(size: fs.body-sm, fill: muted)[4,000 films, half on the big screen.]
+      #v(2pt)
+      #text(size: fs.body-sm, fill: muted)[4,000 films,\ half on the big screen.]
     ],
     [
-      #text(fill: accent, size: fs.icon)[#fas("\u{f522}")] #h(6pt)
+      #text(fill: accent, size: fs.icon, baseline: fs.icon / 6)[#fas("\u{f522}")] #h(6pt)
       #text(weight: "bold")[Board games] \
-      #text(size: fs.body-sm, fill: muted)[From strategy to party, no genre refused.]
+      #v(2pt)
+      #text(size: fs.body-sm, fill: muted)[From strategy to party,\ no genre refused.]
     ],
     [
-      #text(fill: accent, size: fs.icon)[#fas("\u{f1b0}")] #h(6pt)
+      #text(fill: accent, size: fs.icon, baseline: fs.icon / 6)[#fas("\u{f1b0}")] #h(6pt)
       #text(weight: "bold")[Saga] #text(fill: accent)[#sym.mars] \
-      #text(size: fs.body-sm, fill: muted)[Black Labrador and walking companion.]
+      #v(2pt)
+      #text(size: fs.body-sm, fill: muted)[Black Labrador and\ walking companion.]
     ],
   )
 
