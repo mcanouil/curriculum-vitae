@@ -17,8 +17,27 @@
   date: updated-at,
 )
 #set page(paper: "a4", margin: 0pt)
-#set text(font: "Georgia", size: 9.5pt, fill: rgb("#1c1c1c"), lang: "en")
+#let base-size = 10pt
+#let stacked-dates = false
+#set text(font: "Georgia", size: base-size, fill: rgb("#1c1c1c"), lang: "en")
 #set par(leading: 5.5pt)
+
+// ── Font size scale ─────────────────────────────────────────────────────────
+// Change `base-size` above to scale the entire typographic hierarchy.
+#let fs = (
+  fine: base-size - 3pt, //  7pt — copyright
+  date: base-size - 2pt, //  8pt — date ranges
+  small: base-size - 2pt, //  8pt — contact, labels, DOI, footer
+  label: base-size - 1pt, //  9pt — divider, separator, skills, talks
+  body-sm: base-size - 1pt, //  9pt — org/place, client desc, pub body
+  body: base-size, // 10pt — entry title (= document default)
+  lead: base-size, // 10pt — subtitle
+  profile: base-size + 2pt, // 12pt — profile, subtitle
+  credential: base-size + 4pt, // 14pt — Ph.D. suffix
+  icon: base-size + 6pt, // 16pt — interest icons
+  signature: base-size + 14pt, // 24pt — signature
+  name: base-size + 24pt, // 34pt — name heading
+)
 
 // ── Colour palettes ──────────────────────────────────────────────────────────
 // Change `palette` to switch the entire colour scheme.
@@ -45,30 +64,41 @@
 #let muted = palettes.at(palette).muted
 #let rule-c = palettes.at(palette).rule
 
+// Date range — renders inline or stacked depending on `stacked-dates`
+#let date-range(start, end, stacked: stacked-dates) = {
+  if stacked {
+    set text(fill: muted, size: fs.date)
+    start
+    linebreak()
+    [#sym.dash.en #end]
+  } else {
+    text(fill: muted, size: fs.label)[#start -- #end]
+  }
+}
 
 // Icon helpers — Font Awesome 7
 #let fab(code) = text(font: "Font Awesome 7 Brands", code)
 #let fas(code) = text(font: "Font Awesome 7 Free Solid", code)
 
 // Contact separator
-#let sep = h(1fr) + text(fill: accent.lighten(30%), size: 8pt)[ · ] + h(1fr)
+#let sep = h(1fr) + text(fill: accent.lighten(30%), size: fs.label)[ · ] + h(1fr)
 
 // ── Header ────────────────────────────────────────────────────────────────────
 #block(width: 100%, fill: ink)[
-  #pad(x: 48pt, top: 20pt, bottom: 14pt)[
+  #pad(x: 42pt, top: 18pt, bottom: 12pt)[
     // Name + subtitle block (photo spans this)
     #layout(size => {
       let name-block = [
-        #text(size: 34pt, fill: white, tracking: -0.5pt)[
+        #text(size: fs.name, fill: white, tracking: -0.5pt)[
           #text(weight: "light")[MICKAËL ] #text(weight: "bold")[CANOUIL]#text(
-            size: 14pt,
+            size: fs.credential,
             fill: accent,
             style: "italic",
           )[, Ph.D.]
         ]
         #v(2pt)
         #text(
-          size: if profile-picture != none { 9.5pt } else { 11pt },
+          size: fs.lead,
           fill: accent,
           tracking: if profile-picture != none { 0.5pt } else { 1pt },
         )[
@@ -103,10 +133,10 @@
       }
     })
     // Contact links (full width, below the photo)
-    #v(8pt)
-    #line(length: 100%, stroke: 0.4pt + white.transparentize(70%))
     #v(6pt)
-    #set text(size: 7.5pt, fill: white.transparentize(20%))
+    #line(length: 100%, stroke: 0.4pt + white.transparentize(70%))
+    #v(5pt)
+    #set text(size: fs.small, fill: white.transparentize(20%))
     #link("mailto:pro@mickael.canouil.dev")[#fas("\u{f0e0}") #h(3pt) pro\@mickael.canouil.dev]
     #sep
     #link("https://mickael.canouil.fr")[#fas("\u{f0ac}") #h(3pt) mickael.canouil.fr]
@@ -136,52 +166,60 @@
     columns: (auto, 1fr),
     column-gutter: 10pt,
     align: bottom,
-    text(size: 8pt, weight: "bold", fill: accent, tracking: 2pt)[#upper(title)],
+    text(size: fs.label, weight: "bold", fill: accent, tracking: 2pt)[#upper(title)],
     line(length: 100%, stroke: 0.8pt + rule-c),
   )
-  v(10pt)
-}
-
-// Job / education entry — company & place on a separate line
-#let entry(title, org, place, period, note: none) = {
-  grid(
-    columns: (1fr, auto),
-    column-gutter: 6pt,
-    text(weight: "bold", size: 9.5pt)[#title], align(top + right)[#text(size: 8pt, fill: muted)[#period]],
-  )
-  v(1pt)
-  text(size: 8.5pt)[#text(fill: accent)[#org] · #text(fill: muted)[#place]]
-  if note != none {
-    v(2pt)
-    text(size: 8.5pt, fill: muted, style: "italic")[#note]
-  }
   v(8pt)
 }
 
-// Client sub-entry with stacked date range
-#let client(name, start, end, desc) = {
+// Job / education entry — company & place on a separate line
+#let entry(title, org, place, start, end, note: none, stacked: stacked-dates) = {
   grid(
-    columns: (auto, 1fr, auto),
+    columns: (1fr, auto),
+    column-gutter: 6pt,
+    text(weight: "bold", size: fs.body)[#title], align(top + right)[#date-range(start, end, stacked: stacked)],
+  )
+  v(-5pt)
+  text(size: fs.body-sm)[#text(fill: accent)[#org] · #text(fill: muted)[#place]]
+  if note != none {
+    v(2pt)
+    {
+      set par(justify: true)
+      set text(size: fs.body-sm, fill: muted, style: "italic", hyphenate: false)
+      note
+    }
+  }
+  v(7pt)
+}
+
+// Client sub-entry with date range (stacked by default)
+#let client(name, start, end, desc, stacked: true, name-width: auto) = {
+  grid(
+    columns: (name-width, 1fr, auto),
     column-gutter: 5pt,
-    text(fill: accent, weight: "bold", style: "normal")[#name #sym.dash.en],
-    desc,
+    text(fill: accent, weight: "bold", style: "normal")[#name],
+    {
+      set par(justify: true)
+      set text(hyphenate: false)
+      desc
+    },
     align(top + right)[
-      #set text(fill: muted, style: "normal", size: 7pt)
-      #start \ #sym.dash.en #end
+      #set text(style: "normal")
+      #date-range(start, end, stacked: stacked)
     ],
   )
   v(4pt)
 }
 
-// Role sub-entry with stacked date range
-#let subentry(role, employer, start, end) = {
+// Role sub-entry with date range (stacked by default)
+#let subentry(role, employer, start, end, stacked: true) = {
   grid(
     columns: (1fr, auto),
     column-gutter: 5pt,
     [#text(style: "normal", weight: "semibold")[#role] #sym.dash.en #employer],
     align(top + right)[
-      #set text(fill: muted, style: "normal", size: 7pt)
-      #start \ #sym.dash.en #end
+      #set text(style: "normal")
+      #date-range(start, end, stacked: stacked)
     ],
   )
   v(2pt)
@@ -192,25 +230,25 @@
   grid(
     columns: (7pt, 1fr),
     column-gutter: 4pt,
-    text(fill: accent, size: 8pt)[■], text(size: 7.5pt, weight: "bold", tracking: 0.5pt)[#upper(label)],
+    text(fill: accent, size: fs.label)[■], text(size: fs.small, weight: "bold", tracking: 0.5pt)[#upper(label)],
   )
-  v(3pt)
+  v(2pt)
   pad(left: 11pt)[
-    #set text(size: 8pt, fill: ink)
+    #set text(size: fs.label, fill: ink)
     #items
   ]
-  v(7pt)
+  v(6pt)
 }
 
 // Open source subsection label
 #let sub(label) = {
-  text(size: 7.5pt, weight: "bold", fill: muted, tracking: 0.5pt)[#upper(label)]
+  text(size: fs.small, weight: "bold", fill: muted, tracking: 0.5pt)[#upper(label)]
   v(4pt)
 }
 
 // Talk / workshop item
 #let item(title, url, date) = {
-  set text(size: 8pt)
+  set text(size: fs.label)
   link(url)[#title]
   text(fill: muted)[, #date]
   linebreak()
@@ -218,29 +256,31 @@
 
 // Publication entry
 #let pub(authors, title, journal, year, doi, role: none) = {
-  set text(size: 8.5pt)
+  set text(size: fs.body-sm)
   set par(leading: 4pt)
   authors
   [ "#title." ]
   emph(journal)
   [, #year.]
   if role != none {
-    text(size: 7.5pt, fill: muted)[ (#role)]
+    text(size: fs.small, fill: muted)[ (#role)]
   }
   h(4pt)
   link("https://doi.org/" + doi)[
-    #text(size: 7.5pt, fill: accent)[doi:#doi]
+    #text(size: fs.small, fill: accent)[doi:#doi]
   ]
-  v(6pt)
+  v(5pt)
 }
 
 // ── Content area ──────────────────────────────────────────────────────────────
-#pad(x: 48pt, top: 24pt, bottom: 44pt)[
+#pad(x: 42pt, top: 20pt, bottom: 38pt)[
   // Subtle dashed underline on links — scoped to content area only
   #show link: it => underline(stroke: (paint: accent.lighten(60%), thickness: 0.4pt, dash: "dashed"), offset: 2pt, it)
 
   // Profile
-  #text(size: 10.5pt, style: "italic")[
+  #text(size: fs.profile, style: "italic")[
+    #set par(justify: true)
+    #set text(hyphenate: false)
     I build tools that make reproducible research easier for data scientists and researchers.
     With a Ph.D. in biostatistics and deep expertise in the Quarto and R ecosystems,
     I bridge the gap between statistical rigour and practical usability.
@@ -253,7 +293,7 @@
   // ── Two-column body ──────────────────────────────────────────────────────────
   #grid(
     columns: (1fr, 170pt),
-    column-gutter: 32pt,
+    column-gutter: 28pt,
 
     // Left column — Experience + Education
     [
@@ -264,25 +304,38 @@
         "Senior Biostatistician",
         [Astek #sym.dash.en IT&M Stats / Alsinova CRO],
         "Remote",
-        [Nov. 2022 -- present],
+        [Nov. 2022],
+        [present],
       )
-      #pad(bottom: 6pt)[
-        #set text(size: 8.5pt, fill: muted, style: "italic")
+      #pad(bottom: 4pt)[
+        #set text(size: fs.body-sm, fill: muted, style: "italic")
+        #let cw = 55pt
         #client(
           "Client 1", // "L'Oréal",
           [Nov. 2022],
           [Mar. 2026],
-        )[#text(weight: "semibold")[Production-grade R packages] and #text(weight: "semibold")[end-to-end statistical pipelines for multi-omics data] (microbiome, proteomics, lipidomics) and large-scale cohort studies. #text(weight: "semibold")[Fully integrated GitHub / Google Cloud infrastructure]: GitHub Actions for CI/CD triggering, Cloud Build for GCP-side execution, Cloud Workstation as the reproducible development environment, and BigQuery for petabyte-scale data storage and querying.]
+          name-width: cw,
+        )[
+          #text(weight: "semibold")[
+            Production-grade R packages] and #text(weight: "semibold")[end-to-end statistical pipelines for multi-omics data] (microbiome, proteomics, lipidomics) and large-scale cohort studies. #text(weight: "semibold")[Fully integrated GitHub / Google Cloud infrastructure]: GitHub Actions for CI/CD triggering, Cloud Build for GCP-side execution, Cloud Workstation as the reproducible development environment, and BigQuery for petabyte-scale data storage and querying.
+        ]
         #client(
           "Client 2", // "Servier",
           [Nov. 2025],
           [present],
-        )[#text(weight: "semibold")[All-in-one R package for methylation sequencing]: end-to-end pipeline orchestrated with `targets` (import, quality control, filtering, statistical analysis), #text(weight: "semibold")[interactive `shiny` interface] enabling researchers to import, QC, filter, analyse, and browse methylation data, and #text(weight: "semibold")[automated Quarto CLI reports] generating QC and statistical reports with contextual interpretation guidelines.]
+          name-width: cw,
+        )[
+          #text(weight: "semibold")[
+            All-in-one R package for methylation sequencing]: end-to-end pipeline orchestrated with `targets` (import, quality control, filtering, statistical analysis), #text(weight: "semibold")[interactive `shiny` interface] enabling researchers to import, QC, filter, analyse, and browse methylation data, and #text(weight: "semibold")[automated Quarto CLI reports] generating QC and statistical reports with contextual interpretation guidelines.
+        ]
         #client(
-          "Consulting & Training",
+          [Consulting \ & Training],
           [Nov. 2022],
           [present],
-        )[Statistical consulting, R and Quarto training, and workshop delivery for academic and industry clients.]
+          name-width: cw,
+        )[
+          Statistical consulting, R and Quarto training, and workshop delivery for academic and industry clients.
+        ]
       ]
 
       // ── EGID ───────────────────────────────────────────────────────────────
@@ -291,11 +344,14 @@
           "Biostatistician, then Head of Biostatistics",
           [CNRS UMR 8199 / Inserm U1283 #sym.dash.en EGID],
           "Lille, France",
-          [Sep. 2012 -- Oct. 2022],
-          note: "Led multi-omics research in type 2 diabetes genetics: genome-wide and epigenome-wide association studies on international cohorts, eQTL mapping in human pancreatic islets, and joint modelling of longitudinal and survival data. 8 first/co-first/co-last author papers across Nature Communications, Diabetes Care, Diabetes, Bioinformatics, and more. Managed a biostatistics team and coordinated with international consortia: CKDgen, CHARGE, IMIDIA, DIRECT, RHAPSODY.",
+          [Sep. 2012],
+          [Oct. 2022],
+          note: [
+            Led multi-omics research in type 2 diabetes genetics: genome-wide and epigenome-wide association studies on international cohorts, eQTL mapping in human pancreatic islets, and joint modelling of longitudinal and survival data. 8 first/co-first/co-last author papers across Nature Communications, Diabetes Care, Diabetes, Bioinformatics, and more. Managed a biostatistics team and coordinated with international consortia: CKDgen, CHARGE, IMIDIA, DIRECT, RHAPSODY.
+          ],
         )
-        #pad(bottom: 6pt)[
-          #set text(size: 8.5pt, fill: muted, style: "italic")
+        #pad(bottom: 4pt)[
+          #set text(size: fs.body-sm, fill: muted, style: "italic")
           #subentry("Head of Biostatistics", "Institut Pasteur de Lille", [Oct. 2017], [Oct. 2022])
           #subentry("Biostatistician", "CNRS", [Sep. 2012], [Sep. 2017])
         ]
@@ -308,8 +364,10 @@
           "Ph.D. in Biostatistics",
           "University of Lille",
           "Lille, France",
-          [Oct. 2014 -- Sep. 2017],
+          [Oct. 2014],
+          [Sep. 2017],
           note: [Thesis: "Joint Modelling of Longitudinal and Survival Data Applied to Genetic Association Studies."],
+          stacked: true,
         )
       ]
 
@@ -317,16 +375,20 @@
         "M.Sc. in Biostatistics, Bioinformatics & Genomics",
         "University Claude Bernard Lyon 1",
         "Lyon, France",
-        [Sep. 2009 -- Jul. 2011],
+        [Sep. 2009],
+        [Jul. 2011],
         note: "Specialised in Biostatistics.",
+        stacked: true,
       )
 
       #entry(
         "B.Sc. in Biology",
         "University Claude Bernard Lyon 1",
         "Lyon, France",
-        [Sep. 2006 -- Jul. 2009],
+        [Sep. 2006],
+        [Jul. 2009],
         note: "Specialised in Biostatistics.",
+        stacked: true,
       )
     ],
 
@@ -337,20 +399,20 @@
       #skill-cat("Statistics & Methods")[
         GWAS, multi-omics (proteomics, metabolomics, transcriptomics, epigenomics), mixed & joint models, survival analysis, meta-analysis
       ]
-      #skill-cat("R Ecosystem")[
-        Tidyverse, ggplot2, shiny, knitr, rmarkdown, renv, roxygen2, data.table, targets, golem, testthat, Bioconductor (limma, DESeq2, ...)
-      ]
-      #skill-cat("Authoring & Publishing")[
-        Quarto, Typst, LaTeX, Reveal.js, Pandoc, R Markdown, HTML/CSS, SCSS
+      #skill-cat("Infrastructure")[
+        GitHub (Actions, Pages), Docker, Dev Containers, Google Cloud (Workstation, BigQuery, Cloud Build), VSCode/Positron extensions
       ]
       #skill-cat("Dev Languages")[
         R, Lua, Typst, Python, TypeScript, JavaScript, Bash, SQL
       ]
-      #skill-cat("Infrastructure")[
-        GitHub (Actions, Pages), Docker, Dev Containers, Google Cloud (Workstation, BigQuery, Cloud Build), VSCode/Positron extensions
+      #skill-cat("R Ecosystem")[
+        Tidyverse (ggplot2, shiny, ...), devtools (testthat, roxygen2, ...), Bioconductor (limma, DESeq2, ...), renv, targets
+      ]
+      #skill-cat("Authoring & Publishing")[
+        Quarto, Typst, LaTeX, Reveal.js, Pandoc, R Markdown, HTML/(S)CSS
       ]
 
-      #set text(size: 8.5pt)
+      #set text(size: fs.body-sm)
 
       #block(breakable: false)[
         #divider("Open Source")
@@ -360,7 +422,7 @@
         30+ extensions: Lua filters/shortcodes, Typst/HTML/Reveal.js formats, _etc._
       ]
 
-      #v(8pt)
+      #v(6pt)
       #block(breakable: false)[
         #sub("R Packages")
         #link("https://github.com/mcanouil/NACHO")[_NACHO_], #link("https://github.com/mcanouil/insane")[_insane_], #link("https://github.com/mcanouil/MiSTr")[_MiSTr_], #link("https://github.com/mcanouil/snpEnrichment")[_snpEnrichment_], #link("https://github.com/mcanouil/ggpacman")[_ggpacman_] and more #sym.dash.en spanning genomics QC, statistical testing, and data visualisation.
@@ -418,8 +480,8 @@
         )
       ]
 
-      #v(6pt)
-      #text(size: 7.5pt)[
+      #v(4pt)
+      #text(size: fs.small)[
         #text(fill: accent, weight: "bold")[Languages:]
         French (native) · English (fluent)
       ]
@@ -500,44 +562,44 @@
     "10.1016/j.molmet.2017.03.011",
     role: "†co-first",
   )
-  #text(size: 8pt, fill: muted)[
+  #text(size: fs.label, fill: muted)[
     #text(fill: accent, weight: "bold")[49] peer-reviewed papers in total, including publications in _Nature_, _Nature Genetics_, and _Diabetes_.
   ]
 
-  #v(8pt)
+  #v(6pt)
 
   // ── Interests (full width) ──────────────────────────────────────────────────
   #divider("Interests")
 
-  #set text(size: 9pt)
+  #set text(size: fs.body-sm)
   #grid(
     columns: (1fr, 1fr, 1fr),
     column-gutter: 16pt,
     [
-      #text(fill: accent, size: 16pt)[#fas("\u{f008}")] #h(6pt)
+      #text(fill: accent, size: fs.icon)[#fas("\u{f008}")] #h(6pt)
       #text(weight: "bold")[Cinephile] \
-      #text(size: 8.5pt, fill: muted)[4,000 films, half on the big screen.]
+      #text(size: fs.body-sm, fill: muted)[4,000 films, half on the big screen.]
     ],
     [
-      #text(fill: accent, size: 16pt)[#fas("\u{f522}")] #h(6pt)
+      #text(fill: accent, size: fs.icon)[#fas("\u{f522}")] #h(6pt)
       #text(weight: "bold")[Board games] \
-      #text(size: 8.5pt, fill: muted)[From strategy to party, no genre refused.]
+      #text(size: fs.body-sm, fill: muted)[From strategy to party, no genre refused.]
     ],
     [
-      #text(fill: accent, size: 16pt)[#fas("\u{f1b0}")] #h(6pt)
+      #text(fill: accent, size: fs.icon)[#fas("\u{f1b0}")] #h(6pt)
       #text(weight: "bold")[Saga] #text(fill: accent)[#sym.mars] \
-      #text(size: 8.5pt, fill: muted)[Black Labrador and walking companion.]
+      #text(size: fs.body-sm, fill: muted)[Black Labrador and walking companion.]
     ],
   )
 
   #v(1fr)
   #h(1fr)
-  #text(font: "Snell Roundhand", size: 26pt, fill: accent, weight: "bold")[Mickaël Canouil]
+  #text(font: "Snell Roundhand", size: fs.signature, fill: accent, weight: "bold")[Mickaël Canouil]
   #h(0.1fr)
   #v(1fr)
   #align(center)[
     #text(
-      size: 7pt,
+      size: fs.fine,
       fill: muted,
     )[© #updated-at.display("[year]") Mickaël Canouil · #link("https://creativecommons.org/licenses/by-nc-nd/4.0/")[CC BY-NC-ND 4.0]]
   ]
@@ -548,8 +610,8 @@
   #block(width: 100%)[
     #block(width: 100%, height: 3pt, fill: accent)
     #block(width: 100%, fill: ink)[
-      #pad(x: 48pt, y: 6pt)[
-        #set text(size: 7.5pt)
+      #pad(x: 42pt, y: 6pt)[
+        #set text(size: fs.small)
         #text(fill: white.transparentize(30%))[Updated: #updated-at.display("[month repr:short]. [year]")]
         #h(1fr)
         #text(fill: accent, weight: "bold", tracking: -0.3pt)[MICKAËL CANOUIL]
