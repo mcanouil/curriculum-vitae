@@ -284,7 +284,7 @@
     I build tools that make reproducible research easier for data scientists and researchers.
     With a Ph.D. in biostatistics and deep expertise in the Quarto and R ecosystems,
     I bridge the gap between statistical rigour and practical usability.
-    49 peer-reviewed papers; 30+ Quarto extensions; creator of the Quarto Extensions Directory and Quarto Wizard.
+    50 peer-reviewed papers; 30+ Quarto extensions; creator of the Quarto Extensions Directory and Quarto Wizard.
     Lifelong learner, passionate about sharing knowledge through workshops, open source, and community engagement.
   ]
 
@@ -563,7 +563,7 @@
     role: "†co-first",
   )
   #text(size: fs.label, fill: muted)[
-    #text(fill: accent, weight: "bold")[49] peer-reviewed papers in total, including publications in _Nature_, _Nature Genetics_, and _Diabetes_.
+    #text(fill: accent, weight: "bold")[50] peer-reviewed papers in total, including publications in _Nature_, _Nature Genetics_, and _Diabetes_.
   ]
 
   #v(6pt)
