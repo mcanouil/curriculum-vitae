@@ -6,7 +6,7 @@
 // https://github.com/mcanouil
 //
 
-#let updated-at = datetime(year: 2026, month: 6, day: 3)
+#let updated-at = datetime(year: 2026, month: 7, day: 27)
 
 // Profile picture — set to none to hide, or a path string to show
 #let profile-picture = "profile.png"
