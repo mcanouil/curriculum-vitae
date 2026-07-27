@@ -322,11 +322,10 @@
         #client(
           "Client 2", // "Servier",
           [Nov. 2025],
-          [present],
+          [Jun. 2026],
           name-width: cw,
         )[
-          #text(weight: "semibold")[
-            All-in-one R package for methylation sequencing]: end-to-end pipeline orchestrated with `targets` (import, quality control, filtering, statistical analysis), #text(weight: "semibold")[interactive `shiny` interface] enabling researchers to import, QC, filter, analyse, and browse methylation data, and #text(weight: "semibold")[automated Quarto CLI reports] generating QC and statistical reports with contextual interpretation guidelines.
+          #text(weight: "semibold")[Two production R packages] for a genomics research programme. #text(weight: "semibold")[Methylation sequencing pipeline] (`targets`-orchestrated QC, filtering, and differential methylation) with a `shiny` JBrowseR genome browser and automated Quarto reports. #text(weight: "semibold")[Gene set enrichment package] unifying ORA, GO, GOseq and fgsea behind a single S7 result type, with a `golem` `shiny` app and reproducible multi-contrast analysis.
         ]
         #client(
           [Consulting \ & Training],
