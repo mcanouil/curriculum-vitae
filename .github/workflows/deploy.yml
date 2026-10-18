@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup Typst
         uses: typst-community/setup-typst@v5
@@ -42,7 +42,7 @@ jobs:
         run: typst compile --font-path "${FA_FONT_DIR}" curriculum-vitae.typ curriculum-vitae.pdf
 
       - name: Compile CV to PNG
-        run: typst compile --format png --ppi 300 --font-path "${FA_FONT_DIR}" curriculum-vitae.typ curriculum-vitae-{0p}.png
+        run: typst compile --format png --ppi 300 --font-path "${FA_FONT_DIR}" curriculum-vitae.typ "curriculum-vitae-{0p}.png"
 
       - name: Prepare deployment directory
         run: |
@@ -50,9 +50,8 @@ jobs:
           cp curriculum-vitae.pdf _site/
           cp curriculum-vitae-*.png _site/
 
-          PNG_FILES=$(ls -1 _site/curriculum-vitae-*.png | sort)
           PNG_ITEMS=""
-          for png in ${PNG_FILES}; do
+          for png in _site/curriculum-vitae-*.png; do
             name=$(basename "${png}")
             PNG_ITEMS="${PNG_ITEMS}<li><a href=\"${name}\"><img src=\"${name}\" alt=\"${name}\" style=\"max-width:100%;\"></a></li>"
           done
